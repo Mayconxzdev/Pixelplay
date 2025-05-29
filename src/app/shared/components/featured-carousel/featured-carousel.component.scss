@@ -1,0 +1,391 @@
+.featured-carousel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+  overflow: hidden;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  
+  // Garante que o carrossel seja acessível por teclado
+  &:focus {
+    outline: 2px solid var(--ion-color-primary);
+    outline-offset: 2px;
+  }
+  
+  // Melhora a experiência em telas pequenas
+  @media (max-width: 768px) {
+    min-height: 350px;
+    margin-bottom: 16px;
+  }
+  
+  @media (max-width: 480px) {
+    min-height: 300px;
+    border-radius: 8px;
+  }
+
+  .loading-container,
+  .error-container,
+  .swiper-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+    background-color: var(--ion-color-light);
+    color: var(--ion-color-medium);
+    text-align: center;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 10px;
+
+    ion-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    p {
+      margin: 0 0 16px;
+      font-size: 16px;
+    }
+
+    ion-button {
+      --padding-start: 24px;
+      --padding-end: 24px;
+    }
+  }
+
+  .swiper-loading {
+    ion-spinner {
+      --color: var(--ion-color-primary);
+      width: 48px;
+      height: 48px;
+    }
+  }
+
+  .swiper-container {
+    width: 100%;
+    height: 100%;
+  }
+
+  .slide {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .slide-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 400px;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .backdrop-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+
+    .backdrop {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .backdrop-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.9) 0%,
+        rgba(0, 0, 0, 0.7) 30%,
+        rgba(0, 0, 0, 0.3) 60%,
+        transparent 100%
+      );
+      z-index: 2;
+    }
+  }
+
+
+  .content {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-end;
+    color: white;
+    box-sizing: border-box;
+    
+    // Garante que o conteúdo seja legível em telas pequenas
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 15px;
+    }
+  }
+
+
+  .poster-container {
+    flex: 0 0 150px;
+    height: 225px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transform: translateY(10px);
+    transition: transform 0.3s ease;
+    
+    // Ajustes para telas pequenas
+    @media (max-width: 768px) {
+      width: 120px;
+      height: 180px;
+      margin-bottom: 10px;
+    }
+    
+    @media (max-width: 480px) {
+      width: 100px;
+      height: 150px;
+    }
+
+    .poster {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+
+  .info {
+    flex: 1;
+    max-width: calc(100% - 170px);
+    
+    // Ajustes para telas pequenas
+    @media (max-width: 768px) {
+      max-width: 100%;
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0 0 8px 0;
+      line-height: 1.2;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      
+      // Ajustes para telas pequenas
+      @media (max-width: 768px) {
+        font-size: 20px;
+      }
+      
+      @media (max-width: 480px) {
+        font-size: 18px;
+      }
+    }
+
+
+    .meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      font-size: 14px;
+      color: var(--ion-color-light);
+
+      .year {
+        display: flex;
+        align-items: center;
+      }
+
+      .rating {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        color: var(--ion-color-warning);
+
+        ion-icon {
+          color: var(--ion-color-warning);
+        }
+      }
+    }
+
+
+    .overview {
+      font-size: 14px;
+      line-height: 1.4;
+      margin: 0 0 16px 0;
+      /* Estilo para truncar texto em várias linhas */
+      /* stylelint-disable-next-line value-no-vendor-prefix */
+      display: -webkit-box;
+      /* stylelint-disable-next-line property-no-vendor-prefix */
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-height: 4.2em; /* Aproximadamente 3 linhas de texto */
+      position: relative;
+      /* Força o webkit a respeitar o max-height */
+      -webkit-line-clamp: 3;
+      line-clamp: 3;
+      
+      /* Melhora a aparência do texto truncado */
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 30%;
+        height: 1.4em;
+        background: linear-gradient(to right, rgba(0,0,0,0), rgba(0,0,0,0.8) 50%);
+      }
+      
+      // Melhora a legibilidade em telas pequenas
+      @media (max-width: 480px) {
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        max-height: 2.8em; /* Ajusta a altura para 2 linhas */
+      }
+    }
+
+
+    .details-button {
+      --border-width: 1px;
+      --border-color: var(--ion-color-light);
+      --color: var(--ion-color-light);
+      --background: transparent;
+      --background-hover: rgba(255, 255, 255, 0.1);
+      --background-activated: rgba(255, 255, 255, 0.2);
+      --box-shadow: none;
+      margin: 0;
+      font-weight: 500;
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 0.5px;
+    }
+  }
+
+
+  .pagination {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    z-index: 10;
+    padding: 0 20px;
+    margin: 0;
+    list-style: none;
+
+    button.pagination-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.5);
+      border: none;
+      padding: 0;
+      margin: 0 4px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      
+      // Esconde o texto do botão, mas mantém acessível
+      text-indent: -9999px;
+      overflow: hidden;
+      
+      // Estilo para foco
+      &:focus {
+        outline: 2px solid var(--ion-color-primary);
+        outline-offset: 2px;
+      }
+      
+      // Estilo para hover
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.7);
+        transform: scale(1.1);
+      }
+      
+      // Estilo para o slide ativo
+      &.active {
+        background-color: var(--ion-color-primary);
+        transform: scale(1.2);
+      }
+      
+      // Indicador de foco para leitores de tela
+      &::after {
+        content: '';
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        border: 0;
+      }
+
+      &.active {
+        width: 20px;
+        border-radius: 4px;
+        background-color: var(--ion-color-primary);
+      }
+    }
+  }
+
+
+  @media (max-width: 768px) {
+    .content {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 16px;
+    }
+
+    .poster-container {
+      display: none;
+    }
+
+    .info {
+      max-width: 100%;
+
+      .title {
+        font-size: 20px;
+      }
+
+      .overview {
+        /* stylelint-disable-next-line property-no-vendor-prefix */
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+      }
+    }
+  }
+
+
+  @media (max-width: 480px) {
+    min-height: 350px;
+
+    .loading-container,
+    .error-container {
+      height: 350px;
+    }
+
+    .info {
+      .title {
+        font-size: 18px;
+      }
+      .overview {
+        font-size: 13px;
+        /* stylelint-disable-next-line property-no-vendor-prefix */
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+      }
+    }
+  }
+}

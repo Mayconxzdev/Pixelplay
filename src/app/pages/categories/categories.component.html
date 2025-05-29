@@ -1,0 +1,45 @@
+<!-- Seção de Categorias -->
+<div class="categories-section">
+  <h2 class="section-title">Categorias</h2>
+  
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Carregando categorias...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !isLoading" class="error-container">
+    <ion-icon name="alert-circle-outline" class="error-icon"></ion-icon>
+    <p>{{ error }}</p>
+    <ion-button (click)="loadGenres()" fill="clear" size="small">
+      <ion-icon slot="start" name="refresh"></ion-icon>
+      Tentar novamente
+    </ion-button>
+  </div>
+
+  <!-- Categorias Principais -->
+  <div *ngIf="!isLoading && !error" class="categories-grid">
+    <div *ngFor="let category of categories" 
+         class="category-card" 
+         [class.active]="false"
+         (click)="onCategoryClick(category)">
+      <ion-icon [name]="category.icon" class="category-icon"></ion-icon>
+      <span class="category-name">{{ category.name }}</span>
+    </div>
+  </div>
+</div>
+
+<!-- Seção de Gêneros -->
+<div class="genres-section" *ngIf="!isLoading && !error">
+  <h2 class="section-title">Gêneros</h2>
+  
+  <div class="genres-grid">
+    <div *ngFor="let genre of genres" 
+         class="genre-chip"
+         (click)="onGenreClick(genre)">
+      <ion-icon [name]="getGenreIcon(genre.name)" class="genre-icon"></ion-icon>
+      <span class="genre-name">{{ genre.name }}</span>
+    </div>
+  </div>
+</div>

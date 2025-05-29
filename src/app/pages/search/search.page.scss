@@ -1,0 +1,1450 @@
+// Variáveis de cores e estilos
+:host {
+  --search-toolbar-height: 64px;
+  --search-bar-height: 72px;
+  --search-border-radius: 12px;
+  --search-elevation: 0 4px 20px rgba(0, 0, 0, 0.1);
+  --primary-gradient: linear-gradient(135deg, var(--ion-color-primary) 0%, #3a7bd5 100%);
+  --card-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  --transition: transform 0.3s ease, opacity 0.3s ease;
+  contain: content;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--ion-background-color);
+  color: var(--ion-text-color);
+  will-change: transform, opacity;
+  
+  // Estilos para o tema escuro
+  @media (prefers-color-scheme: dark) {
+    --card-bg: #1e1e1e;
+    --card-border: #333;
+    --text-muted: #a0a0a0;
+  }
+  
+  // Estilos para o tema claro
+  @media (prefers-color-scheme: light) {
+    --card-bg: #ffffff;
+    --card-border: #e0e0e0;
+    --text-muted: #666666;
+  }
+}
+
+/* Classe para elementos ocultos */
+.hidden {
+  display: none !important;
+}
+
+// Ícone de busca
+.search-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+  color: white;
+  
+  ion-icon {
+    font-size: 1.5rem;
+  }
+}
+
+// Cabeçalho fixo no topo
+.search-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  
+  ion-toolbar {
+    --background: white;
+    --color: #000000;
+    --border-style: none;
+    --color: #000000;
+    
+    ion-title {
+      font-weight: 600;
+      font-size: 1.4rem;
+      padding-inline: 0;
+      color: #000000;
+    }
+    
+    ion-buttons {
+      ion-back-button {
+        --color: #000000;
+      }
+    }
+  }
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  
+  .search-toolbar {
+    --background: transparent;
+    --color: white;
+    --min-height: var(--search-toolbar-height);
+    --border-width: 0;
+    --padding-top: 0;
+    --padding-bottom: 12px;
+    --padding-start: 16px;
+    --padding-end: 16px;
+    
+    ion-searchbar {
+      --background: rgba(255, 255, 255, 0.15);
+      --color: white;
+      --placeholder-color: rgba(255, 255, 255, 0.7);
+      --icon-color: white;
+      --border-radius: 12px;
+      --box-shadow: none;
+      padding: 0;
+      height: 56px;
+      
+      .searchbar-input-container {
+        input {
+          padding-left: 48px !important;
+          font-weight: 500;
+          letter-spacing: 0.3px;
+        }
+        
+        .searchbar-search-icon {
+          left: 16px;
+          width: 24px;
+          height: 24px;
+          background: none;
+          
+          &::after {
+            display: none;
+          }
+          
+          svg {
+            width: 24px;
+            height: 24px;
+          }
+        }
+        
+        .searchbar-clear-button {
+          right: 12px;
+          
+          ion-icon {
+            font-size: 22px;
+            color: white;
+            opacity: 0.8;
+          }
+        }
+      }
+    }
+  }
+  
+  ion-title {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 0 16px;
+  }
+  
+  .search-toolbar {
+    --min-height: var(--search-bar-height);
+    padding: 0 16px 16px;
+    background: transparent;
+    
+    ion-searchbar {
+      --background: rgba(255, 255, 255, 0.15);
+      --border-radius: var(--search-border-radius);
+      --box-shadow: none;
+      --placeholder-color: rgba(255, 255, 255, 0.7);
+      --color: white;
+      --icon-color: white;
+      --clear-button-color: white;
+      --cancel-button-color: white;
+      height: 56px;
+      padding: 8px 0;
+      transition: all 0.3s ease;
+      
+      &.searchbar-has-focus {
+        --background: rgba(255, 255, 255, 0.25);
+      }
+      
+      .searchbar-input {
+        box-shadow: none !important;
+        padding-inline-start: 50px !important;
+      }
+      
+      .searchbar-search-icon {
+        left: 18px;
+        top: 18px;
+        width: 20px;
+        height: 20px;
+      }
+      
+      input {
+        color: white !important;
+        font-weight: 500;
+        letter-spacing: 0.3px;
+        
+        &::placeholder {
+          color: rgba(255, 255, 255, 0.8) !important;
+          font-weight: 400;
+        }
+      }
+    }
+  }
+}
+
+// Conteúdo principal
+.search-content {
+  --background: var(--ion-color-light);
+  --padding-top: calc(var(--search-toolbar-height) + var(--search-bar-height));
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --padding-bottom: 16px;
+  contain: strict; /* Otimiza a renderização */
+  will-change: transform; /* Otimiza as animações de rolagem */
+}
+
+// Container principal
+.search-container {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 24px 16px 32px;
+  
+  @media (min-width: 768px) {
+    padding: 32px 24px;
+  }
+}
+
+//* Estilos para os itens da lista de resultados */
+ion-list {
+  background: transparent;
+  padding: 0 8px;
+  margin: 0;
+  
+  ion-item {
+    --background: var(--card-bg, #ffffff);
+    --border-radius: 12px;
+    --padding-start: 0;
+    --inner-padding-end: 0;
+    --inner-border-width: 0;
+    --min-height: 100px;
+    margin: 0 0 12px 0;
+    border: 1px solid var(--card-border, #e0e0e0);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    transform: translateZ(0);
+    will-change: transform, box-shadow;
+    
+    &:active {
+      transform: scale(0.98) translateZ(0);
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    &:last-child {
+      margin-bottom: 16px;
+    }
+    
+    ion-thumbnail {
+      --size: 80px;
+      --border-radius: 0;
+      margin: 0;
+      width: 80px;
+      height: 120px;
+      min-width: 80px;
+      min-height: 120px;
+      overflow: hidden;
+      position: relative;
+      background: var(--ion-color-light);
+      
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 100%);
+        pointer-events: none;
+      }
+      
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.3s ease;
+      }
+      
+      .no-poster {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--ion-color-light);
+        color: var(--ion-color-medium);
+        
+        ion-icon {
+          font-size: 2rem;
+          opacity: 0.5;
+        }
+      }
+    }
+    
+    ion-label {
+      margin: 12px 16px 12px 12px;
+      white-space: normal;
+      
+      h2 {
+        font-weight: 600;
+        margin: 0 0 6px 0;
+        font-size: 1rem;
+        line-height: 1.3;
+        color: var(--ion-text-color);
+        /* Suporte para navegadores modernos */
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        /* Suporte para Firefox */
+        display: -moz-box;
+        -moz-box-orient: vertical;
+        -moz-line-clamp: 2;
+        /* Suporte padrão */
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-height: 2.6em; /* line-height * número de linhas */
+        line-clamp: 2; /* Propriedade padrão */
+      }
+      
+      .movie-details {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+        flex-wrap: wrap;
+        
+        .year {
+          font-size: 0.8rem;
+          color: var(--text-muted, #666);
+          margin-right: 12px;
+          font-weight: 400;
+          display: flex;
+          align-items: center;
+          
+          &::before {
+            content: '•';
+            margin-right: 6px;
+            color: var(--ion-color-medium);
+          }
+        }
+        
+        .vote-average {
+          display: flex;
+          align-items: center;
+          font-size: 0.8rem;
+          color: var(--ion-color-warning);
+          font-weight: 500;
+          margin-right: 12px;
+          
+          ion-icon {
+            margin-right: 4px;
+            font-size: 0.9rem;
+          }
+          
+          .vote-count {
+            font-size: 0.7rem;
+            color: var(--text-muted, #666);
+            margin-left: 4px;
+            font-weight: normal;
+          }
+        }
+      }
+      
+      .genres {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 8px -4px 0 -4px;
+        
+        .genre-chip {
+          --padding-top: 4px;
+          --padding-bottom: 4px;
+          --padding-start: 8px;
+          --padding-end: 8px;
+          height: 24px;
+          font-size: 0.7rem;
+          margin: 4px;
+          font-weight: 500;
+          border-radius: 4px;
+          
+          ion-icon {
+            font-size: 0.7rem;
+            margin-right: 4px;
+            opacity: 0.8;
+          }
+          
+          &[outline] {
+            --background: transparent;
+            --color: var(--ion-color-primary);
+            --border-color: var(--ion-color-primary-shade);
+            --border-width: 1px;
+            --border-style: solid;
+            
+            &.ion-color-medium {
+              --color: var(--ion-color-medium);
+              --border-color: var(--ion-color-medium-shade);
+            }
+            
+            &.ion-color-secondary {
+              --color: var(--ion-color-secondary);
+              --border-color: var(--ion-color-secondary-shade);
+            }
+          }
+        }
+      }
+    }
+    
+    ion-icon[slot="end"] {
+      color: var(--ion-color-medium);
+      opacity: 0.7;
+      margin-right: 8px;
+    }
+  }
+  
+  // Estilo para o infinite scroll
+  ion-infinite-scroll {
+    margin: 10px 0 20px;
+    
+    .infinite-loading-text {
+      font-size: 0.9rem;
+      color: var(--text-muted, #666);
+    }
+    
+    .infinite-loading-spinner {
+      --color: var(--ion-color-primary);
+    }
+  }
+}
+
+// Estilos para o contador de resultados
+.results-count {
+  font-size: 0.9rem;
+  color: var(--text-muted, #666);
+  margin: 16px 0;
+  padding: 0 16px;
+  text-align: center;
+  font-weight: 500;
+  
+  strong {
+    color: var(--ion-color-primary);
+    font-weight: 600;
+  }
+}
+
+/* Estilos para o container de sugestões */
+.suggestions-container {
+  padding: 16px 16px 24px;
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+  
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    color: var(--ion-color-primary);
+    text-align: center;
+  }
+  
+  p {
+    font-size: 0.95rem;
+    color: var(--text-muted, #666);
+    text-align: center;
+    margin: 0 0 24px 0;
+    line-height: 1.5;
+  }
+  
+  ion-list-header {
+    --background: transparent;
+    --color: var(--ion-text-color);
+    font-weight: 600;
+    font-size: 1rem;
+    margin: 24px 0 12px;
+    padding: 0;
+    min-height: auto;
+    
+    ion-label {
+      margin: 0;
+    }
+  }
+  
+  .suggestion-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 -4px 12px;
+    
+    ion-chip {
+      margin: 0 4px 8px;
+      --background: var(--ion-color-light);
+      --color: var(--ion-color-dark);
+      --border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      height: 36px;
+      transition: all 0.2s ease;
+      
+      ion-icon {
+        font-size: 0.9rem;
+        margin-right: 6px;
+      }
+      
+      &[outline] {
+        --background: transparent;
+        --border-width: 1px;
+        --border-style: solid;
+        
+        &.ion-color-primary {
+          --color: var(--ion-color-primary);
+          --border-color: var(--ion-color-primary-shade);
+        }
+        
+        &.ion-color-secondary {
+          --color: var(--ion-color-secondary);
+          --border-color: var(--ion-color-secondary-shade);
+        }
+      }
+      
+      &:active {
+        transform: scale(0.96);
+        opacity: 0.9;
+      }
+    }
+  }
+}
+
+/* Estilos para o estado de carregamento */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+  text-align: center;
+  
+  ion-spinner {
+    --color: var(--ion-color-primary);
+    width: 36px;
+    height: 36px;
+    margin-bottom: 16px;
+  }
+  
+  p {
+    color: var(--text-muted, #666);
+    font-size: 0.9rem;
+    margin: 12px 0 0;
+  }
+}
+
+/* Estilos para o estado sem resultados */
+.no-results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  text-align: center;
+  min-height: 60vh;
+  
+  .no-results-content {
+    max-width: 320px;
+    width: 100%;
+    
+    .no-results-icon {
+      font-size: 4rem;
+      color: var(--ion-color-medium);
+      opacity: 0.5;
+      margin-bottom: 16px;
+    }
+    
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin: 0 0 8px 0;
+      color: var(--ion-text-color);
+    }
+    
+    p {
+      font-size: 0.95rem;
+      color: var(--text-muted, #666);
+      margin: 0 0 24px 0;
+      line-height: 1.5;
+    }
+    
+    ion-button {
+      --border-radius: 20px;
+      --padding-start: 24px;
+      --padding-end: 24px;
+      font-weight: 500;
+      
+      ion-icon {
+        margin-right: 8px;
+      }
+    }
+  }
+}
+
+// Container principal
+.search-container {
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  contain: content;
+  will-change: transform, opacity;
+  transition: var(--transition);
+  
+  // Garante que o conteúdo não fique atrás da barra de navegação no iOS
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
+  
+  // Adiciona um pouco de espaço extra no topo para dispositivos com notch
+  padding-top: env(safe-area-inset-top);
+  
+  // Ajustes para o tema escuro
+  @media (prefers-color-scheme: dark) {
+    background-color: var(--ion-background-color, #121212);
+  }
+}
+
+/* Estilos responsivos */
+@media (min-width: 768px) {
+  ion-list {
+    padding: 0 16px;
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+    
+    ion-item {
+      margin-bottom: 16px;
+      
+      ion-thumbnail {
+        --size: 100px;
+        width: 100px;
+        height: 150px;
+        min-width: 100px;
+        min-height: 150px;
+      }
+      
+      ion-label {
+        h2 {
+          font-size: 1.1rem;
+        }
+        
+        .movie-details {
+          .year, .vote-average {
+            font-size: 0.85rem;
+          }
+        }
+        
+        .genres {
+          .genre-chip {
+            font-size: 0.75rem;
+          }
+        }
+      }
+    }
+  }
+  
+  .suggestions-container {
+    padding: 24px 32px;
+    
+    h2 {
+      font-size: 1.75rem;
+    }
+    
+    p {
+      font-size: 1.05rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .suggestion-chips {
+      justify-content: center;
+      
+      ion-chip {
+        font-size: 0.9rem;
+        height: 40px;
+        
+        ion-icon {
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+  
+  .no-results {
+    .no-results-content {
+      max-width: 400px;
+      
+      .no-results-icon {
+        font-size: 5rem;
+      }
+      
+      h3 {
+        font-size: 1.5rem;
+      }
+      
+      p {
+        font-size: 1.05rem;
+      }
+      
+      ion-button {
+        --padding-start: 32px;
+        --padding-end: 32px;
+        height: 48px;
+        font-size: 1rem;
+      }
+    }
+  }
+}
+
+// Sugestões
+.suggestions-container {
+  padding: 16px 0;
+  width: 100%;
+  display: block !important; /* Garante que o container seja exibido */
+  opacity: 1 !important; /* Sobrescreve qualquer opacidade que possa estar sendo aplicada */
+  visibility: visible !important; /* Garante que esteja visível */
+  
+  h3 {
+    color: var(--ion-text-color);
+    font-size: 1.1rem;
+    margin: 0 0 16px 0;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    
+    ion-icon {
+      margin-right: 8px;
+      color: var(--ion-color-primary);
+    }
+  }
+  
+  .suggestions {
+    margin-bottom: 32px;
+    
+    h3 {
+      color: var(--ion-color-medium);
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+    }
+  }
+  
+  .suggestion-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    
+    ion-chip {
+      --background: var(--ion-color-light);
+      --color: var(--ion-color-dark);
+      --border-radius: 20px;
+      --padding-start: 12px;
+      --padding-end: 12px;
+      --padding-top: 8px;
+      --padding-bottom: 8px;
+      height: auto;
+      margin: 0;
+      transition: var(--transition);
+      
+      ion-icon {
+        font-size: 14px;
+        margin-right: 6px;
+        color: var(--ion-color-medium);
+      }
+      
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+  
+  .search-tips {
+    background: var(--ion-color-light);
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 24px;
+    
+    h3 {
+      display: flex;
+      align-items: center;
+      margin-bottom: 16px;
+      
+      ion-icon {
+        margin-right: 8px;
+        color: var(--ion-color-warning);
+      }
+    }
+    
+    ul {
+      margin: 0;
+      padding: 0 0 0 20px;
+      
+      li {
+        margin-bottom: 8px;
+        color: var(--ion-color-medium);
+        line-height: 1.5;
+        
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+  
+  .initial-state {
+    text-align: center;
+    padding: 40px 20px;
+    margin-top: 40px;
+    
+    ion-icon {
+      font-size: 64px;
+      color: var(--ion-color-medium);
+      opacity: 0.5;
+      margin-bottom: 16px;
+    }
+    
+    h3 {
+      font-size: 1.5rem;
+      margin-bottom: 12px;
+      color: var(--ion-text-color);
+    }
+    
+    p {
+      color: var(--ion-color-medium);
+      max-width: 400px;
+      margin: 0 auto 24px;
+      line-height: 1.6;
+    }
+  }
+}
+
+// Loading
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+  
+  ion-spinner {
+    --color: var(--ion-color-primary);
+    width: 40px;
+    height: 40px;
+    margin-bottom: 16px;
+  }
+  
+  p {
+    margin: 0;
+    color: var(--ion-color-medium);
+    font-size: 0.9rem;
+  }
+}
+
+// Grid de filmes
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+  contain: content; /* Otimiza a renderização */
+  
+  /* Força a aceleração por hardware */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+// Responsividade para telas menores
+@media (max-width: 768px) {
+  .movie-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Cartão de filme
+.movie-card {
+  background: var(--ion-color-light);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  .movie-poster {
+    position: relative;
+    width: 100%;
+    padding-top: 150%;
+    overflow: hidden;
+    
+    .poster-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    
+    &:hover .poster-image {
+      transform: scale(1.05);
+    }
+  }
+  
+  .movie-info {
+    padding: 16px;
+    
+    .movie-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 0 0 8px 0;
+      color: var(--ion-text-color);
+    }
+    
+    .movie-genres {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 12px;
+      
+      .genre-tag {
+        background: var(--ion-color-light);
+        color: var(--ion-color-medium);
+        font-size: 0.7rem;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-weight: 500;
+      }
+      
+      .more-tag {
+        background: var(--ion-color-light);
+        color: var(--ion-color-medium);
+        font-size: 0.7rem;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+      }
+    }
+    
+    .movie-overview {
+      font-size: 0.85rem;
+      color: var(--ion-color-medium);
+      margin: 0 0 16px 0;
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      line-clamp: 3;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .movie-actions {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 8px;
+      border-top: 1px solid var(--ion-color-light-shade);
+      margin-top: auto;
+      
+      ion-button {
+        --padding-start: 0;
+        --padding-end: 0;
+        --ripple-color: transparent;
+        margin: 0;
+        height: auto;
+        
+        ion-icon {
+          font-size: 1.4rem;
+        }
+      }
+    }
+  }
+  
+  .movie-rating {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    backdrop-filter: blur(4px);
+  }
+  
+  .movie-year {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    backdrop-filter: blur(4px);
+  }
+}
+
+// Resultados
+// Resultados da busca
+.results-container {
+  margin-top: 24px;
+  
+  .results-count {
+    color: var(--ion-color-medium);
+    font-size: 0.95rem;
+    margin: 0 0 16px 8px;
+    display: block;
+  }
+  
+  .movie-item {
+    --padding-start: 0;
+    --inner-padding-end: 0;
+    --background: transparent;
+    --border-radius: 12px;
+    margin-bottom: 12px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    
+    &:active {
+      transform: scale(0.98);
+    }
+    
+    ion-thumbnail {
+      --size: 80px;
+      --border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+      
+      img {
+        transition: transform 0.3s ease;
+      }
+      
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      
+      .movie-rating {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        backdrop-filter: blur(4px);
+        
+        ion-icon {
+          color: #ffd700;
+          margin-right: 4px;
+          font-size: 0.9rem;
+        }
+      }
+      
+      .movie-year {
+        position: absolute;
+        bottom: 12px;
+        right: 12px;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        backdrop-filter: blur(4px);
+      }
+    }
+    
+    .movie-info {
+      padding: 16px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      
+      .movie-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin: 0 0 8px 0;
+        color: var(--ion-text-color);
+        line-height: 1.3;
+      }
+      
+      .movie-genres {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-bottom: 12px;
+        
+        .genre-tag {
+          background: var(--ion-color-light);
+          color: var(--ion-color-medium);
+          font-size: 0.7rem;
+          padding: 4px 10px;
+          border-radius: 12px;
+          font-weight: 500;
+        }
+        
+        .more-tag {
+          background: var(--ion-color-light);
+          color: var(--ion-color-medium);
+          font-size: 0.7rem;
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 600;
+        }
+      }
+      
+      .movie-overview {
+        font-size: 0.85rem;
+        color: var(--ion-color-medium);
+        margin: 0 0 16px 0;
+        line-height: 1.5;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-clamp: 3;
+      }
+      
+      .movie-actions {
+        display: flex;
+        justify-content: space-between;
+        padding-top: 8px;
+        border-top: 1px solid var(--ion-color-light-shade);
+        margin-top: auto;
+        
+        ion-button {
+          --padding-start: 0;
+          --padding-end: 0;
+          --ripple-color: transparent;
+          margin: 0;
+          height: auto;
+          
+          ion-icon {
+            font-size: 1.4rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Estado de carregamento
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 0;
+  text-align: center;
+  
+  .spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(var(--ion-color-primary-rgb), 0.1);
+    border-top-color: var(--ion-color-primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+  }
+  
+  p {
+    color: var(--ion-color-medium);
+    font-size: 1rem;
+    margin: 16px 0 0;
+  }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+// Estado sem resultados
+.no-results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  
+  .no-results-content {
+    max-width: 400px;
+    width: 100%;
+  }
+  
+  .no-results-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(var(--ion-color-primary-rgb), 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    
+    ion-icon {
+      font-size: 40px;
+      color: var(--ion-color-primary);
+    }
+  }
+  
+  h3 {
+    font-size: 1.5rem;
+    color: var(--ion-text-color);
+    margin: 0 0 12px;
+    font-weight: 600;
+  }
+  
+  p {
+    color: var(--ion-color-medium);
+    margin: 0 0 24px;
+    line-height: 1.5;
+  }
+  
+  .suggested-searches {
+    margin: 24px 0;
+    
+    h4 {
+      font-size: 0.95rem;
+      color: var(--ion-color-medium);
+      margin: 0 0 12px;
+      font-weight: 500;
+    }
+    
+    .suggestion-chips {
+      justify-content: center;
+    }
+  }
+  
+  .clear-search-btn {
+    --border-radius: 20px;
+    --padding-start: 24px;
+    --padding-end: 24px;
+    --border-width: 1px;
+    --border-style: solid;
+    --border-color: var(--ion-color-medium);
+    --color: var(--ion-color-medium);
+    font-weight: 500;
+    text-transform: none;
+    margin-top: 16px;
+    
+    ion-icon {
+      margin-right: 8px;
+    }
+  }
+}
+
+// Animações
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+// Loading State
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 0;
+  min-height: 300px;
+  
+  .spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(var(--ion-color-primary-rgb), 0.1);
+    border-radius: 50%;
+    border-top-color: var(--ion-color-primary);
+    animation: spin 1s ease-in-out infinite;
+    margin-bottom: 20px;
+  }
+  
+  p {
+    color: var(--ion-color-medium);
+    font-size: 0.95rem;
+    margin: 8px 0 0;
+    text-align: center;
+  }
+}
+
+// Initial State
+.initial-state {
+  text-align: center;
+  padding: 60px 20px;
+  animation: fadeIn 0.5s ease-out;
+  
+  ion-icon {
+    font-size: 72px;
+    color: var(--ion-color-primary);
+    opacity: 0.2;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+  }
+  
+  h3 {
+    margin: 0 0 12px 0;
+    color: var(--ion-color-medium);
+    font-weight: 600;
+    font-size: 1.4rem;
+  }
+  
+  p {
+    color: var(--ion-color-medium);
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: 500px;
+    margin: 0 auto 20px;
+  }
+}
+
+// Ajustes para modo escuro
+@media (prefers-color-scheme: dark) {
+  .search-header {
+    background: linear-gradient(135deg, var(--ion-color-dark) 0%, #1a2a4a 100%);
+    
+    ion-toolbar {
+      --color: white;
+    }
+    
+    .search-toolbar {
+      ion-searchbar {
+        --background: rgba(255, 255, 255, 0.1);
+        --color: white;
+        --placeholder-color: rgba(255, 255, 255, 0.7);
+        --icon-color: white;
+      }
+    }
+  }
+  
+  .suggestions-container {
+    .suggestions {
+      h3 {
+        color: rgba(255, 255, 255, 0.9);
+      }
+    }
+    
+    .search-tips {
+      background: rgba(255, 255, 255, 0.05);
+      
+      h3 {
+        color: rgba(255, 255, 255, 0.9);
+      }
+      
+      ul li {
+        color: rgba(255, 255, 255, 0.7);
+      }
+    }
+  }
+  
+  // Estilos específicos para o modo escuro
+  .movie-card {
+    background: var(--ion-color-step-900);
+    
+    .movie-info {
+      .movie-title {
+        color: white;
+      }
+      
+      .movie-genres .genre-tag {
+        background: rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.8);
+      }
+      
+      .movie-overview {
+        color: rgba(255, 255, 255, 0.7);
+      }
+    }
+  }
+  
+  .no-results {
+    .no-results-icon {
+      background: rgba(var(--ion-color-primary-rgb), 0.15);
+      
+      ion-icon {
+        color: var(--ion-color-primary);
+      }
+    }
+    
+    h3 {
+      color: white;
+    }
+    
+    p {
+      color: rgba(255, 255, 255, 0.7);
+    }
+    
+    .suggested-searches h4 {
+      color: rgba(255, 255, 255, 0.8);
+    }
+    
+    .clear-search-btn {
+      --border-color: rgba(255, 255, 255, 0.3);
+      --color: rgba(255, 255, 255, 0.9);
+    }
+  }
+  
+  .initial-state {
+    ion-icon {
+      color: var(--ion-color-primary);
+      opacity: 0.3;
+    }
+    
+    h3 {
+      color: rgba(255, 255, 255, 0.9);
+    }
+    
+    p {
+      color: rgba(255, 255, 255, 0.7);
+    }
+  }
+}

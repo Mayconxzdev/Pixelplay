@@ -1,0 +1,44 @@
+<div class="movie-list-container" *ngIf="movies.length > 0">
+  <div class="header">
+    <h2 class="title">{{ title }}</h2>
+    <a *ngIf="showViewAll && viewAllRoute" [routerLink]="viewAllRoute" class="view-all">
+      Ver todos
+      <ion-icon name="chevron-forward-outline"></ion-icon>
+    </a>
+  </div>
+
+  <div class="movie-scroll">
+    <div 
+      *ngFor="let movie of movies; trackBy: trackBy"
+      class="movie-item"
+      (click)="onMovieClick(movie.id)"
+    >
+      <div class="poster-container">
+        <img 
+          [src]="movie.poster_path ? 'https://image.tmdb.org/t/p/w300' + movie.poster_path : 'assets/images/no-poster.jpg'" 
+          [alt]="movie.title"
+          class="poster"
+          loading="lazy"
+        >
+        
+        <div class="rating" [class.high-rating]="movie.vote_average >= 7" [class.medium-rating]="movie.vote_average >= 5 && movie.vote_average < 7">
+          {{ movie.vote_average.toFixed(1) }}
+        </div>
+        
+        <button 
+          class="favorite-button" 
+          (click)="$event.stopPropagation(); onFavoriteClick($event, movie)"
+          [class.favorited]="movie.isFavorite"
+          aria-label="Toggle favorite"
+        >
+          <ion-icon [name]="movie.isFavorite ? 'heart' : 'heart-outline'"></ion-icon>
+        </button>
+      </div>
+      
+      <div class="details">
+        <h3 class="title">{{ movie.title }}</h3>
+        <p class="release-date">{{ movie.release_date | dateFormat:'shortDate' }}</p>
+      </div>
+    </div>
+  </div>
+</div>

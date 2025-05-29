@@ -1,0 +1,265 @@
+/* Container principal */
+:host {
+  display: block;
+  padding: 16px;
+  background: var(--ion-color-light);
+}
+
+/* Título da seção */
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+  color: var(--ion-color-dark);
+  position: relative;
+  padding-bottom: 8px;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 48px;
+    height: 3px;
+    background: var(--ion-color-primary);
+    border-radius: 3px;
+  }
+}
+
+/* Container de carregamento */
+.loading-container,
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 0;
+  text-align: center;
+
+  ion-spinner {
+    --color: var(--ion-color-primary);
+    margin-bottom: 16px;
+  }
+
+  p {
+    color: var(--ion-color-medium);
+    margin: 8px 0 0;
+    font-size: 0.95rem;
+  }
+}
+
+/* Container de erro */
+.error-container {
+  .error-icon {
+    font-size: 48px;
+    color: var(--ion-color-danger);
+    margin-bottom: 12px;
+  }
+
+  p {
+    margin-bottom: 16px;
+    color: var(--ion-color-dark);
+  }
+
+  ion-button {
+    --color: var(--ion-color-primary);
+    margin-top: 8px;
+  }
+}
+
+/* Grade de categorias */
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+/* Cartão de categoria */
+.category-card {
+  background: var(--ion-color-light-tint);
+  border-radius: 12px;
+  padding: 20px 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid var(--ion-color-light-shade);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+
+  &:hover, &.active {
+    background: var(--ion-color-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(var(--ion-color-primary-rgb), 0.2);
+    border-color: transparent;
+
+    .category-icon, .category-name {
+      color: white;
+    }
+  }
+}
+
+/* Ícone da categoria */
+.category-icon {
+  font-size: 28px;
+  margin-bottom: 8px;
+  color: var(--ion-color-primary);
+  transition: color 0.2s ease;
+}
+
+/* Nome da categoria */
+.category-name {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--ion-color-dark);
+  margin: 0;
+  transition: color 0.2s ease;
+}
+
+/* Seção de gêneros */
+.genres-section {
+  margin-top: 32px;
+}
+
+/* Grade de gêneros */
+.genres-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+/* Chip de gênero */
+.genre-chip {
+  display: inline-flex;
+  align-items: center;
+  background: var(--ion-color-light-tint);
+  border-radius: 20px;
+  padding: 8px 14px;
+  font-size: 0.85rem;
+  color: var(--ion-color-dark);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid var(--ion-color-light-shade);
+
+  &:hover {
+    background: var(--ion-color-primary);
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(var(--ion-color-primary-rgb), 0.2);
+    border-color: transparent;
+
+    .genre-icon {
+      color: white;
+    }
+  }
+}
+
+/* Ícone do gênero */
+.genre-icon {
+  font-size: 16px;
+  margin-right: 6px;
+  color: var(--ion-color-primary);
+  transition: color 0.2s ease;
+}
+
+/* Nome do gênero */
+.genre-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Modo escuro */
+:host-context(.dark) {
+  .section-title {
+    color: var(--ion-color-light);
+  }
+
+  .category-card {
+    background: var(--ion-color-step-150);
+    border-color: var(--ion-color-step-250);
+
+    .category-name {
+      color: var(--ion-color-light);
+    }
+  }
+
+  .genre-chip {
+    background: var(--ion-color-step-150);
+    border-color: var(--ion-color-step-250);
+    color: var(--ion-color-light);
+  }
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+  :host {
+    padding: 12px;
+  }
+
+  .section-title {
+    font-size: 1.3rem;
+    margin-bottom: 14px;
+  }
+
+  .categories-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+  }
+
+  .category-card {
+    min-height: 100px;
+    padding: 16px 8px;
+  }
+
+  .category-icon {
+    font-size: 24px;
+  }
+
+  .category-name {
+    font-size: 0.8rem;
+  }
+
+  .genre-chip {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+}
+
+@media (min-width: 768px) {
+  :host {
+    padding: 20px;
+  }
+
+  .section-title {
+    font-size: 1.75rem;
+    margin-bottom: 20px;
+  }
+
+  .categories-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+  }
+
+  .category-card {
+    min-height: 140px;
+    padding: 24px 12px;
+  }
+
+  .category-icon {
+    font-size: 32px;
+  }
+
+  .category-name {
+    font-size: 1rem;
+  }
+
+  .genre-chip {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+}

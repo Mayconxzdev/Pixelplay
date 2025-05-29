@@ -1,0 +1,23 @@
+<div class="movie-card" (click)="openMovieDetails()">
+  <div class="poster-container">
+    <img [src]="posterImage" [alt]="movie.title" class="poster" loading="lazy">
+    
+    <div class="rating" [ngClass]="ratingColor">
+      {{ ratingPercentage }}%
+    </div>
+    
+    <button 
+      *ngIf="showFavoriteButton" 
+      class="favorite-button" 
+      (click)="onFavoriteClick($event)"
+      [ngClass]="{ 'favorited': movie.isFavorite }"
+      aria-label="Toggle favorite">
+      <ion-icon [name]="movie.isFavorite ? 'heart' : 'heart-outline'"></ion-icon>
+    </button>
+  </div>
+  
+  <div class="details">
+    <h3 class="title">{{ movie.title }}</h3>
+    <p class="release-date">{{ movie.release_date | date: 'mediumDate' }}</p>
+  </div>
+</div>

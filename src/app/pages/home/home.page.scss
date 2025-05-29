@@ -1,0 +1,141 @@
+/* Estilos para o cabeçalho */
+ion-header {
+  ion-toolbar {
+    --background: #1a1a1a; /* Cor de fundo escura */
+    --color: #ffffff; /* Cor do texto branco */
+    --border-width: 0;
+    --min-height: 64px;
+    
+    ion-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #ffffff;
+      text-align: left;
+      padding-left: 16px;
+    }
+    
+    ion-buttons {
+      margin-right: 8px;
+      
+      .header-button {
+        --padding-start: 12px;
+        --padding-end: 12px;
+        --padding-top: 0;
+        --padding-bottom: 0;
+        margin: 0 4px;
+        
+        .header-icon {
+          width: 24px;
+          height: 24px;
+          fill: currentColor;
+        }
+        
+        &:hover, &:focus {
+          opacity: 0.8;
+        }
+      }
+    }
+  }
+}
+
+/* Garante que o conteúdo não fique atrás do cabeçalho */
+ion-content {
+  --padding-top: 16px;
+}
+
+/* Estilos para o carrossel de destaques */
+app-featured-carousel {
+  margin: 0 -16px 24px;
+  width: calc(100% + 32px);
+  display: block;
+  
+  @media (min-width: 768px) {
+    margin: 0 0 32px;
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+}
+
+/* Estilos para a lista de filmes */
+app-movie-list {
+  margin-bottom: 32px;
+  display: block;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+/* Estilos para o estado de carregamento */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+  
+  ion-spinner {
+    --color: var(--ion-color-primary);
+    margin-bottom: 16px;
+  }
+  
+  p {
+    color: var(--ion-color-medium);
+    margin: 0;
+  }
+}
+
+/* Estilos para o botão de busca na página de busca */
+.search-header {
+  ion-toolbar {
+    --background: #1a1a1a;
+    --color: #ffffff;
+    
+    ion-title {
+      color: #ffffff;
+    }
+    
+    ion-buttons {
+      ion-button {
+        --color: #ffffff;
+      }
+    }
+  }
+}
+
+/* Estilos para a barra de busca */
+.searchbar-container {
+  background-color: #1a1a1c;
+  padding: 8px 16px;
+  
+  ion-searchbar {
+    --background: #2d2d2f;
+    --color: #ffffff;
+    --placeholder-color: #a0a0a0;
+    --icon-color: #ffffff;
+    --border-radius: 8px;
+    --box-shadow: none;
+  }
+}
+
+/* Estilos para o estado de erro */
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  
+  ion-icon {
+    font-size: 48px;
+    color: var(--ion-color-danger);
+    margin-bottom: 16px;
+  }
+  
+  p {
+    color: var(--ion-color-medium);
+    margin: 0 0 20px;
+  }
+}

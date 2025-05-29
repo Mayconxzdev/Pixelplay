@@ -1,0 +1,15 @@
+<ion-tabs (ionTabsDidChange)="setActiveTab($event)">
+  <ion-router-outlet></ion-router-outlet>
+  
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="home" [routerLink]="['/tabs/home']" routerLinkActive="tab-selected">
+      <ion-icon [name]="activeTab === 'home' ? 'film' : 'film-outline'"></ion-icon>
+      <ion-label>Filmes</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="favorites" [routerLink]="['/tabs/favorites']" routerLinkActive="tab-selected">
+      <ion-icon [name]="activeTab === 'favorites' ? 'heart' : 'heart-outline'"></ion-icon>
+      <ion-label>Favoritos</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>

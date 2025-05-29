@@ -1,0 +1,223 @@
+/* Estilos modernos para a página de lista de filmes */
+
+ion-content {
+  --background: #0f0f13;
+  --color: #ffffff;
+  --padding-top: 0;
+  --padding-bottom: 0;
+}
+
+ion-toolbar {
+  --background: #1a1a23;
+  --color: #ffffff;
+  --border-color: rgba(255, 255, 255, 0.08);
+  --border-width: 0 0 1px 0;
+  --min-height: 64px;
+  
+  ion-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  
+  ion-back-button {
+    --color: var(--ion-color-primary);
+    --padding-start: 8px;
+    --padding-end: 8px;
+  }
+}
+
+/* Container de carregamento */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  text-align: center;
+  padding: 24px;
+  background: transparent;
+  
+  ion-spinner {
+    --color: var(--ion-color-primary);
+    width: 48px;
+    height: 48px;
+    margin-bottom: 20px;
+  }
+  
+  p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
+    margin: 12px 0 0;
+    font-weight: 500;
+  }
+}
+
+/* Container de erro */
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  text-align: center;
+  padding: 24px;
+  background: transparent;
+  
+  ion-icon {
+    font-size: 64px;
+    color: var(--ion-color-danger);
+    margin-bottom: 20px;
+  }
+  
+  p {
+    color: var(--ion-color-light);
+    font-size: 1rem;
+    margin: 0 0 24px;
+    line-height: 1.5;
+    max-width: 400px;
+  }
+  
+  ion-button {
+    --background: var(--ion-color-danger);
+    --background-hover: var(--ion-color-danger-shade);
+    --color: #ffffff;
+    --padding-start: 24px;
+    --padding-end: 24px;
+    --border-radius: 8px;
+    font-weight: 500;
+    text-transform: none;
+    height: 44px;
+    margin-top: 8px;
+    
+    --box-shadow: 0 4px 12px rgba(235, 68, 90, 0.3);
+    
+    &:active {
+      transform: translateY(1px);
+    }
+  }
+}
+
+/* Mensagem de fim da lista */
+.no-more-content {
+  padding: 32px 24px;
+  text-align: center;
+  
+  p {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+    margin: 0;
+    position: relative;
+    display: inline-block;
+    padding: 0 16px;
+    
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 40px;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+    
+    &::before {
+      left: -40px;
+    }
+    
+    &::after {
+      right: -40px;
+    }
+  }
+}
+
+/* Estilo para a lista de filmes */
+app-movie-list {
+  width: 100%;
+  display: block;
+  padding: 8px 0;
+}
+
+/* Estilo para o infinite scroll */
+ion-infinite-scroll {
+  margin: 16px 0 32px;
+  
+  ion-infinite-scroll-content {
+    --color: var(--ion-color-primary);
+    
+    .loading-spinner {
+      margin: 0 auto;
+    }
+    
+    .loading-text {
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.6);
+      margin-top: 8px;
+    }
+  }
+}
+
+/* Efeito de gradiente no topo e na base */
+ion-content::before,
+ion-content::after {
+  content: '';
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: 40px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+ion-content::before {
+  top: 0;
+  background: linear-gradient(to bottom, #0f0f13 0%, transparent 100%);
+}
+
+ion-content::after {
+  bottom: 0;
+  background: linear-gradient(to top, #0f0f13 0%, transparent 100%);
+}
+
+/* Ajustes para telas pequenas */
+@media (max-width: 576px) {
+  .loading-container,
+  .error-container {
+    height: 50vh;
+    padding: 16px;
+  }
+  
+  .no-more-content {
+    padding: 24px 16px;
+  }
+  
+  ion-toolbar {
+    --min-height: 56px;
+    
+    ion-title {
+      font-size: 1.1rem;
+      padding: 0 8px;
+    }
+  }
+}
+
+/* Animações */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Efeito de hover nos botões */
+ion-button {
+  --transition: all 0.2s ease;
+  transition: var(--transition);
+  
+  &:active {
+    --transition: all 0.1s ease;
+    transform: scale(0.96);
+  }
+  
+  &::part(native) {
+    border-radius: 8px;
+  }
+}

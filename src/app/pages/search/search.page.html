@@ -1,0 +1,151 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/tab2" text="" icon="arrow-back"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center">Buscar Filmes</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="clearSearch()" [disabled]="!searchQuery" fill="clear">
+        <ion-icon slot="icon-only" name="close-circle"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  
+  <ion-toolbar class="search-toolbar">
+    <ion-searchbar 
+      #searchInput
+      [(ngModel)]="searchQuery"
+      (ionInput)="onSearchChange($event)"
+      (ionClear)="onSearchClear()"
+      placeholder="Buscar filmes por título ou gênero..."
+      [debounce]="300"
+      animated>
+      <div slot="start" class="search-icon">
+        <ion-icon name="search"></ion-icon>
+      </div>
+    </ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Sugestões -->
+  <div *ngIf="!searchQuery || searchQuery.trim().length <= 2" class="suggestions-container ion-padding">
+    <h2 class="ion-text-center ion-margin-bottom">Bem-vindo ao PixelPlay</h2>
+    <p class="ion-text-center ion-margin-bottom">Encontre seus filmes favoritos ou explore por gêneros</p>
+    
+    <ion-list-header class="ion-no-padding ion-margin-top">
+      <ion-label>Buscas populares</ion-label>
+    </ion-list-header>
+    
+    <div class="suggestion-chips">
+      <ion-chip *ngFor="let term of suggestedSearches; trackBy: trackByTerm" 
+                (click)="setSearchTerm(term)"
+                color="primary"
+                outline>
+        <ion-icon *ngIf="isGenre(term)" name="pricetag" class="ion-margin-end"></ion-icon>
+        {{ term }}
+      </ion-chip>
+    </div>
+    
+    <ion-list-header class="ion-no-padding ion-margin-top">
+      <ion-label>Gêneros populares</ion-label>
+    </ion-list-header>
+    
+    <div class="suggestion-chips">
+      <ion-chip *ngFor="let genre of popularGenres; trackBy: trackByGenre" 
+                (click)="searchByGenre(genre)"
+                color="secondary"
+                outline>
+        <ion-icon name="pricetag" class="ion-margin-end"></ion-icon>
+        {{ genre.name }}
+      </ion-chip>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="ion-text-center ion-padding">
+    <ion-spinner></ion-spinner>
+  </div>
+
+  <!-- Resultados -->
+  <ion-list *ngIf="searchQuery && searchQuery.trim().length > 2 && searchResults.length > 0" lines="none">
+    <ion-item 
+      *ngFor="let movie of searchResults; trackBy: trackByMovieId"
+      button
+      [routerLink]="['/movie', movie.id]"
+      detail>
+      <ion-thumbnail slot="start" class="movie-thumbnail">
+        <img 
+          [src]="getPosterUrl(movie.poster_path)" 
+          [alt]="movie.title"
+          loading="lazy"
+          (error)="onImageError($event)">
+      </ion-thumbnail>
+      
+      <ion-label class="ion-text-wrap">
+        <h2>{{ movie.title }}</h2>
+        
+        <div class="movie-details">
+          <span class="year" *ngIf="movie.release_date">
+            {{ movie.release_date | date: 'yyyy' }}
+          </span>
+          
+          <span class="vote-average" *ngIf="movie.vote_average">
+            <ion-icon name="star" color="warning"></ion-icon>
+            {{ movie.vote_average | number: '1.1-1' }}
+            <span class="vote-count" *ngIf="movie.vote_count">({{ movie.vote_count | number }})</span>
+          </span>
+        </div>
+        
+        <div class="genres" *ngIf="movie.genre_ids?.length">
+          <ion-chip 
+            *ngFor="let genreId of movie.genre_ids | slice:0:2; trackBy: trackByGenreId" 
+            outline 
+            color="primary" 
+            class="genre-chip">
+            <ion-icon name="pricetag" class="ion-margin-end"></ion-icon>
+            {{ getGenreName(genreId) }}
+          </ion-chip>
+          
+          <ion-chip 
+            *ngIf="movie.genre_ids.length > 2" 
+            outline 
+            color="medium" 
+            class="genre-chip">
+            +{{ movie.genre_ids.length - 2 }}
+          </ion-chip>
+        </div>
+      </ion-label>
+      
+      <ion-icon slot="end" name="chevron-forward" color="medium"></ion-icon>
+    </ion-item>
+    
+    <!-- Carregar mais resultados -->
+    <ion-infinite-scroll (ionInfinite)="loadMore($event)" *ngIf="totalPages > currentPage">
+      <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        loadingText="Carregando mais filmes...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </ion-list>
+
+  <!-- Sem resultados -->
+  <div *ngIf="searchQuery && searchQuery.trim().length > 2 && searchResults.length === 0 && !isLoading" 
+       class="no-results ion-text-center ion-padding">
+    <div class="no-results-content">
+      <ion-icon name="search-outline" class="no-results-icon"></ion-icon>
+      <h3>Nenhum resultado encontrado</h3>
+      <p>Não encontramos resultados para "{{ searchQuery }}"</p>
+      <ion-button (click)="clearSearch()" fill="outline" color="medium" class="ion-margin-top">
+        <ion-icon slot="start" name="close-circle"></ion-icon>
+        Limpar busca
+      </ion-button>
+    </div>
+  </div>
+  
+  <!-- Carregando -->
+  <div *ngIf="isLoading" class="loading-container">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Buscando filmes...</p>
+  </div>
+</ion-content>

@@ -1,0 +1,87 @@
+<ion-header [translucent]="true" class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/home" text="" icon="arrow-back-outline" class="custom-back-button"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center">{{ title }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="loadMovies()" fill="clear" class="refresh-button">
+        <ion-icon slot="icon-only" name="refresh-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding-horizontal" (ionScroll)="onScroll($event)">
+  <!-- Loading State -->
+  <div *ngIf="loading && movies.length === 0" class="loading-container">
+    <div class="loading-content">
+      <ion-spinner name="crescent" color="primary"></ion-spinner>
+      <p>Carregando filmes...</p>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="error-container">
+    <div class="error-content">
+      <ion-icon name="sad-outline"></ion-icon>
+      <h3>Ocorreu um erro</h3>
+      <p>{{ error }}</p>
+      <ion-button (click)="loadMovies()" expand="block" class="retry-button">
+        <ion-icon name="refresh" slot="start"></ion-icon>
+        Tentar novamente
+      </ion-button>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && !error && movies.length === 0" class="empty-state">
+    <ion-icon name="film-outline"></ion-icon>
+    <h3>Nenhum filme encontrado</h3>
+    <p>Não conseguimos encontrar filmes nesta categoria.</p>
+    <ion-button (click)="loadMovies()" fill="outline" class="refresh-button">
+      <ion-icon name="refresh" slot="start"></ion-icon>
+      Recarregar
+    </ion-button>
+  </div>
+
+  <!-- Movie List -->
+  <div *ngIf="!error && movies.length > 0" class="movie-list-wrapper">
+    <app-movie-list 
+      [movies]="movies"
+      [title]="title"
+      [showViewAll]="false"
+      (favoriteToggled)="onFavoriteToggled($event)"
+      (movieSelected)="onMovieSelected($event)">
+    </app-movie-list>
+  </div>
+
+  <!-- Loading More Indicator -->
+  <div *ngIf="loading && movies.length > 0" class="loading-more">
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+    <p>Carregando mais filmes...</p>
+  </div>
+
+  <!-- Infinite Scroll -->
+  <ion-infinite-scroll 
+    (ionInfinite)="loadMore($event)" 
+    *ngIf="!loading && movies.length > 0 && currentPage < totalPages"
+    threshold="100px">
+    <ion-infinite-scroll-content 
+      loadingSpinner="bubbles" 
+      loadingText="Carregando mais filmes...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+  <!-- No More Content -->
+  <div *ngIf="currentPage >= totalPages && movies.length > 0" class="no-more-content">
+    <p>Você chegou ao final da lista</p>
+  </div>
+
+  <!-- Scroll to Top Button -->
+  <ion-fab *ngIf="showScrollToTop" vertical="bottom" horizontal="end" slot="fixed" (click)="scrollToTop()" class="scroll-to-top">
+    <ion-fab-button size="small">
+      <ion-icon name="arrow-up"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

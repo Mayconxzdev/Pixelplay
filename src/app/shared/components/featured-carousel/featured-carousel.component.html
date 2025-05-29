@@ -1,0 +1,118 @@
+<div class="featured-carousel">
+  <!-- Loading State -->
+  <div *ngIf="loading && (!movies || movies.length === 0)" class="loading-container">
+    <ion-spinner></ion-spinner>
+    <p>Carregando destaques...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="error-container">
+    <ion-icon name="warning-outline"></ion-icon>
+    <p>Não foi possível carregar os filmes em destaque.</p>
+  </div>
+
+  <!-- Loading State for Swiper -->
+  <div *ngIf="swiperLoading && !loading && !error && movies.length > 0" class="swiper-loading">
+    <ion-spinner></ion-spinner>
+    <p>Preparando o carrossel...</p>
+  </div>
+
+  <!-- Carousel -->
+  <div 
+    class="swiper-container" 
+    #swiperContainer 
+    *ngIf="!swiperLoading && !loading && !error && movies.length > 0"
+    role="region"
+    [attr.aria-label]="'Carrossel de filmes em destaque com ' + movies.length + ' itens'"
+    tabindex="0"
+    (keydown)="onKeyDown($event)"
+  >
+    <div class="swiper-wrapper">
+      <div 
+        class="swiper-slide" 
+        *ngFor="let movie of movies; trackBy: trackByMovieId; let i = index"
+        [attr.data-movie-id]="movie.id"
+        [attr.aria-label]="'Slide ' + (i + 1) + ' de ' + movies.length + ': ' + movie.title + '. Pressione Enter para ver detalhes'"
+        [attr.aria-hidden]="i !== currentSlide"
+        [attr.tabindex]="i === currentSlide ? '0' : '-1'"
+        (keydown.enter)="onMovieSelected(movie.id, $event)"
+        (keydown.space)="onMovieSelected(movie.id, $event)"
+      >
+        <div class="slide-content">
+          <!-- Backdrop Image -->
+          <div class="backdrop-container">
+            <img 
+              [src]="getBackdropUrl(movie.backdrop_path || '')" 
+              [alt]="movie.title + ' backdrop'"
+              class="backdrop"
+              loading="eager"
+              fetchpriority="high"
+            >
+            <div class="backdrop-overlay"></div>
+          </div>
+
+          <!-- Content -->
+          <div class="content">
+            <div class="poster-container">
+              <img 
+                [src]="getPosterUrl(movie.poster_path || '')" 
+                [alt]="movie.title"
+                class="movie-poster"
+                loading="lazy"
+                fetchpriority="low"
+              />
+            </div>
+            
+            <div class="info">
+              <h2 class="title">{{ movie.title }}</h2>
+              <div class="meta">
+                <span class="year" *ngIf="movie.release_date">
+                  {{ getYearFromDate(movie.release_date) }}
+                </span>
+                <span class="rating" *ngIf="movie.vote_average">
+                  {{ movie.vote_average.toFixed(1) }}
+                  <ion-icon name="star"></ion-icon>
+                </span>
+              </div>
+              <div class="overview" [title]="movie.overview">
+                {{ (movie.overview | truncate:150) || 'Sinopse não disponível' }}
+              </div>
+              <div class="actions">
+                <ion-button fill="clear" (click)="onMovieSelected(movie.id)">
+                  <ion-icon name="play-circle" slot="start"></ion-icon>
+                  Assistir
+                </ion-button>
+                <ion-button fill="clear" (click)="onFavoriteToggled(movie, $event)">
+                  <ion-icon 
+                    [name]="isFavorite(movie.id) ? 'heart' : 'heart-outline'"
+                    [color]="isFavorite(movie.id) ? 'danger' : 'light'"
+                  ></ion-icon>
+                </ion-button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div 
+    *ngIf="!loading && !error && movies.length > 1" 
+    class="pagination"
+    role="navigation"
+    aria-label="Navegação do carrossel"
+  >
+    <button 
+      *ngFor="let _ of movies; let i = index"
+      type="button"
+      [class.active]="i === currentSlide"
+      class="pagination-dot"
+      [attr.aria-label]="'Ir para o slide ' + (i + 1) + ' de ' + movies.length"
+      [attr.aria-current]="i === currentSlide ? 'true' : null"
+      (click)="goToSlide(i)"
+      (keydown.enter)="goToSlide(i)"
+      (keydown.space)="goToSlide(i); $event.preventDefault()"
+    ></button>
+  </div>
+</div>

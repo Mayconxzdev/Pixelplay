@@ -1,0 +1,168 @@
+<ion-header #headerToolbar class="ion-no-border">
+  <ion-toolbar>
+    <div class="header-content">
+      <button (click)="goBack()" class="back-button">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+      <ion-title #headerTitle class="ion-text-center">{{ movie?.title || 'Detalhes' }}</ion-title>
+    </div>
+    <ion-buttons slot="end">
+      <ion-button 
+        (click)="toggleFavorite()" 
+        *ngIf="movie" 
+        class="favorite-button"
+        [class.favorited]="movie.isFavorite"
+        [attr.aria-label]="movie.isFavorite ? 'Remover dos favoritos' : 'Adicionar aos favoritos'">
+        <ion-icon 
+          [name]="movie.isFavorite ? 'heart' : 'heart-outline'" 
+          [color]="movie.isFavorite ? 'danger' : 'light'"
+          slot="icon-only">
+        </ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [class.dark-bg]="!movie" [fullscreen]="true">
+  <div *ngIf="loading" class="loading-container">
+    <div class="loading-content">
+      <ion-spinner></ion-spinner>
+      <p class="loading-text">Carregando detalhes do filme...</p>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && error" class="error-container">
+    <ion-icon name="alert-circle-outline"></ion-icon>
+    <p>{{ error }}</p>
+    <ion-button (click)="openHome()" fill="clear">
+      Voltar para a página inicial
+    </ion-button>
+  </div>
+
+  <div *ngIf="!loading && movie" class="movie-details" [class.loaded]="!loading">
+    <!-- Backdrop Image -->
+    <div class="backdrop" *ngIf="movie.backdrop_path">
+      <img [src]="'https://image.tmdb.org/t/p/w1400_and_h450_face' + movie.backdrop_path" [alt]="movie.title + ' backdrop'" loading="lazy">
+      <div class="backdrop-overlay"></div>
+    </div>
+
+    <!-- Movie Info -->
+    <div class="movie-info">
+      <div class="poster-container" *ngIf="movie.poster_path">
+        <img [src]="'https://image.tmdb.org/t/p/w300' + movie.poster_path" [alt]="movie.title + ' poster'" class="poster" loading="lazy">
+      </div>
+      
+      <div class="info-container">
+        <div class="title-rating">
+          <h1>{{ movie.title }} <span *ngIf="movie.release_date">({{ getYearFromDate(movie.release_date) }})</span></h1>
+          <div class="rating" [class]="'rating-' + getRatingColor(movie.vote_average)">
+            {{ movie.vote_average.toFixed(1) }}
+          </div>
+        </div>
+        
+        <div class="genres" *ngIf="movie.genre_ids?.length">
+          {{ getGenres(movie.genre_ids) }}
+        </div>
+        
+        <div class="overview">
+          <h3>Sinopse</h3>
+          <p>{{ movie.overview || 'Sinopse não disponível.' }}</p>
+        </div>
+        
+        <div class="details">
+          <div class="detail" *ngIf="movie.release_date">
+            <ion-icon name="calendar-outline"></ion-icon>
+            <span>{{ movie.release_date | date:'dd/MM/yyyy' }}</span>
+          </div>
+          
+          <div class="detail" *ngIf="movie.runtime">
+            <ion-icon name="time-outline"></ion-icon>
+            <span>{{ movie.runtime }} minutos</span>
+          </div>
+          
+          <div class="detail" *ngIf="movie.original_language">
+            <ion-icon name="language-outline"></ion-icon>
+            <span>{{ movie.original_language | uppercase }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Additional Sections -->
+    <div class="additional-sections">
+      <!-- Trailer -->
+      <div class="section" *ngIf="trailerUrl; else noTrailer">
+        <div class="section-header">
+          <h2>Trailer</h2>
+          <ion-button 
+            fill="clear" 
+            (click)="toggleTrailer()" 
+            class="toggle-trailer-btn"
+            [color]="showTrailer ? 'medium' : 'primary'"
+            size="small">
+            <ion-icon 
+              [name]="showTrailer ? 'chevron-up-outline' : 'play-circle-outline'" 
+              slot="start">
+            </ion-icon>
+            {{ showTrailer ? 'Ocultar' : 'Assistir Trailer' }}
+          </ion-button>
+        </div>
+        
+        <div class="trailer-container" *ngIf="showTrailer && trailerUrl">
+          <div class="trailer-wrapper">
+            <div class="iframe-container">
+              <iframe 
+                [src]="trailerUrl" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen
+                loading="lazy"
+                class="youtube-iframe">
+              </iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <ng-template #noTrailer>
+        <div class="no-trailer">
+          <ion-icon name="videocam-off-outline"></ion-icon>
+          <p>Não há trailer disponível para este filme.</p>
+        </div>
+      </ng-template>
+      
+      <!-- Cast -->
+      <div class="section" *ngIf="movie?.credits?.cast?.length">
+        <h2>Elenco Principal</h2>
+        <div class="cast-scroll">
+          <div class="cast-member" *ngFor="let person of (movie?.credits?.cast || []) | slice:0:10">
+            <img [src]="'https://image.tmdb.org/t/p/w200' + (person?.profile_path || '')" 
+                 [alt]="person?.name || 'Ator'" 
+                 loading="lazy"
+                 onerror="this.src='assets/placeholder-actor.png'"
+                 defaultImage="assets/placeholder-actor.png">
+            <h4>{{ person?.name || 'Nome não disponível' }}</h4>
+            <p>{{ person?.character || 'Personagem não disponível' }}</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Similar Movies -->
+      <div class="section" *ngIf="movie?.similar?.results?.length">
+        <h2>Filmes Similares</h2>
+        <div class="similar-scroll">
+          <div *ngFor="let item of (movie?.similar?.results || []) | slice:0:10" 
+               class="similar-movie" 
+               (click)="openMovieDetails(item?.id, $event)">
+            <img [src]="'https://image.tmdb.org/t/p/w200' + (item?.poster_path || '')" 
+                 [alt]="item?.title || 'Filme similar'" 
+                 loading="lazy"
+                 onerror="this.src='assets/placeholder-poster.png'"
+                 defaultImage="assets/placeholder-poster.png">
+            <h4>{{ item?.title || 'Título indisponível' }}</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

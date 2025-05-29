@@ -1,0 +1,7 @@
+{
+  "name": "pixelplay",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

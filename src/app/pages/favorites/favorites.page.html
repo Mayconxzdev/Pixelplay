@@ -1,0 +1,82 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Meus Favoritos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <ion-spinner></ion-spinner>
+    <p>Carregando filmes favoritos...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="error-container">
+    <ion-icon name="warning-outline"></ion-icon>
+    <p>{{ error }}</p>
+    <ion-button (click)="loadFavorites()">Tentar novamente</ion-button>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && favoriteMovies.length === 0 && !error" class="empty-state">
+    <ion-icon name="heart-dislike-outline"></ion-icon>
+    <h3>Nenhum filme favoritado</h3>
+    <p>Adicione filmes aos seus favoritos para vê-los aqui</p>
+  </div>
+
+  <!-- Favorites List -->
+  <app-movie-list 
+    *ngIf="!loading && favoriteMovies.length > 0"
+    [movies]="favoriteMovies" 
+    title="Meus Favoritos"
+    [showViewAll]="false"
+    (favoriteToggled)="onFavoriteToggled($event)"
+    (movieSelected)="onMovieSelected($event)">
+  </app-movie-list>
+</ion-content>
+
+<style>
+.loading-container,
+.error-container,
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+  text-align: center;
+  padding: 20px;
+}
+
+.loading-container ion-spinner {
+  margin-bottom: 16px;
+}
+
+.error-container ion-icon,
+.empty-state ion-icon {
+  font-size: 64px;
+  color: var(--ion-color-medium);
+  margin-bottom: 16px;
+}
+
+.error-container h3,
+.empty-state h3 {
+  margin: 0 0 8px 0;
+  color: var(--ion-text-color);
+}
+
+.error-container p,
+.empty-state p {
+  margin: 0 0 16px 0;
+  color: var(--ion-color-medium);
+  max-width: 300px;
+}
+
+.empty-state ion-icon {
+  color: var(--ion-color-primary);
+}
+</style>
