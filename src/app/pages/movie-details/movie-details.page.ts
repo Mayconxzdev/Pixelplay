@@ -29,6 +29,7 @@ export class MovieDetailsPage implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(IonContent, { static: false }) content!: IonContent;
   @ViewChild('headerTitle') headerTitle!: any; // Usando any para evitar problemas com a propriedade el
   @ViewChild('headerToolbar') headerToolbar!: any; // Usando any para evitar problemas com a propriedade el
+  @ViewChild('youtubeIframe') youtubeIframe!: ElementRef;
   
   private scrollSubscription: Subscription | null = null;
   private headerHeight = 64; // Altura do cabeçalho em pixels
@@ -99,6 +100,9 @@ export class MovieDetailsPage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy() {
+    // Limpa o trailer ao destruir o componente
+    this.clearTrailer();
+    
     this.subscriptions.unsubscribe();
     if (this.scrollSubscription) {
       this.scrollSubscription.unsubscribe();
@@ -113,6 +117,9 @@ export class MovieDetailsPage implements OnInit, OnDestroy, AfterViewInit {
       this.loading = false;
       return;
     }
+    
+    // Limpa o trailer atual
+    this.clearTrailer();
     
     this.loading = true;
     this.error = null;
@@ -255,6 +262,9 @@ export class MovieDetailsPage implements OnInit, OnDestroy, AfterViewInit {
     }
     
     if (movieId) {
+      // Limpa o trailer atual antes de navegar
+      this.clearTrailer();
+      
       // Navega usando navigateByUrl com replaceUrl: true para evitar acúmulo de histórico
       await this.router.navigateByUrl(`/movie/${movieId}`, { replaceUrl: true });
       
@@ -274,13 +284,14 @@ export class MovieDetailsPage implements OnInit, OnDestroy, AfterViewInit {
           const url = `https://www.youtube.com/embed/${trailer.key}?autoplay=0&rel=0&showinfo=0`;
           // Marca a URL como segura
           this.trailerUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url) as string;
-          console.log('Trailer URL:', this.trailerUrl);
         } else {
+          this.trailerUrl = null;
           console.log('Nenhum trailer disponível para este filme');
         }
       },
       error: (error) => {
         console.error('Erro ao carregar vídeos do filme:', error);
+        this.trailerUrl = null;
       }
     });
   }
@@ -288,5 +299,25 @@ export class MovieDetailsPage implements OnInit, OnDestroy, AfterViewInit {
   // Alterna a exibição do trailer
   toggleTrailer() {
     this.showTrailer = !this.showTrailer;
+    
+    // Se estiver escondendo o trailer, limpa o iframe
+    if (!this.showTrailer) {
+      this.clearTrailer();
+    }
+  }
+
+  // Limpa o trailer atual
+  private clearTrailer() {
+    // Esconde o trailer
+    this.showTrailer = false;
+    
+    // Limpa a URL do trailer
+    this.trailerUrl = null;
+    
+    // Destrói o iframe se existir
+    if (this.youtubeIframe?.nativeElement) {
+      const iframe = this.youtubeIframe.nativeElement;
+      iframe.src = 'about:blank';
+    }
   }
 }
