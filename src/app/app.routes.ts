@@ -1,14 +1,19 @@
 import { Routes } from '@angular/router';
+import { AuthGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   {
-    path: '',
-    redirectTo: 'tabs',
-    pathMatch: 'full'
+    path: 'login',
+    loadChildren: () => import('./pages/login/login.module').then(m => m.LoginPageModule)
   },
   {
     path: 'tabs',
     loadChildren: () => import('./pages/tabs/tabs-routing.module').then(m => m.TabsRoutingModule)
+  },
+  {
+    path: '',
+    redirectTo: 'tabs/home',
+    pathMatch: 'full'
   },
   {
     path: 'search',
@@ -41,7 +46,7 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'tabs',
+    redirectTo: 'tabs/home',
     pathMatch: 'full'
   }
 ];

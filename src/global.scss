@@ -10,27 +10,27 @@
  */
 
 /* Core CSS required for Ionic components to work properly */
-@import "@ionic/angular/css/core.css";
+@use "@ionic/angular/css/core.css" as *;
 
 /* Basic CSS for apps built with Ionic */
-@import "@ionic/angular/css/normalize.css";
-@import "@ionic/angular/css/structure.css";
-@import "@ionic/angular/css/typography.css";
-@import "@ionic/angular/css/display.css";
+@use "@ionic/angular/css/normalize.css" as *;
+@use "@ionic/angular/css/structure.css" as *;
+@use "@ionic/angular/css/typography.css" as *;
+@use "@ionic/angular/css/display.css" as *;
 
 /* Swiper styles */
-@import 'swiper/css';
-@import 'swiper/css/autoplay';
-@import 'swiper/css/effect-fade';
-@import 'swiper/css/navigation';
-@import 'swiper/css/pagination';
+@use 'swiper/css' as *;
+@use 'swiper/css/autoplay' as *;
+@use 'swiper/css/effect-fade' as *;
+@use 'swiper/css/navigation' as *;
+@use 'swiper/css/pagination' as *;
 
 /* Optional CSS utils that can be commented out */
-@import "@ionic/angular/css/padding.css";
-@import "@ionic/angular/css/float-elements.css";
-@import "@ionic/angular/css/text-alignment.css";
-@import "@ionic/angular/css/text-transformation.css";
-@import "@ionic/angular/css/flex-utils.css";
+@use "@ionic/angular/css/padding.css" as *;
+@use "@ionic/angular/css/float-elements.css" as *;
+@use "@ionic/angular/css/text-alignment.css" as *;
+@use "@ionic/angular/css/text-transformation.css" as *;
+@use "@ionic/angular/css/flex-utils.css" as *;
 
 /**
  * Ionic Dark Mode
@@ -39,6 +39,6 @@
  * https://ionicframework.com/docs/theming/dark-mode
  */
 
-/* @import "@ionic/angular/css/palettes/dark.always.css"; */
-/* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import "@ionic/angular/css/palettes/dark.system.css";
+/* @use "@ionic/angular/css/palettes/dark.always.css" as *; */
+/* @use "@ionic/angular/css/palettes/dark.class.css" as *; */
+@use "@ionic/angular/css/palettes/dark.system.css" as *;

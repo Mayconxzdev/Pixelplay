@@ -8,14 +8,17 @@ import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { isDevMode } from '@angular/core';
 import { environment } from '../environments/environment';
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { provideAuth, getAuth } from '@angular/fire/auth';
+import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 
 import { routes } from './app.routes';
 
-const appConfig: ApplicationConfig = {
+export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideHttpClient(),
-    provideIonicAngular({}),
+    provideIonicAngular(),
     importProvidersFrom(IonicStorageModule.forRoot()),
     provideStore({}),
     provideEffects([]),
@@ -25,8 +28,9 @@ const appConfig: ApplicationConfig = {
       autoPause: true,
       trace: false,
       traceLimit: 75
-    })
+    }),
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore())
   ]
 };
-
-export default appConfig;

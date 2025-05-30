@@ -1,0 +1,82 @@
+.login-container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: var(--ion-color-light);
+}
+
+.login-content {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  background: var(--ion-color-light-tint);
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+  h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--ion-color-dark);
+    margin-bottom: 8px;
+    text-align: center;
+  }
+
+  p {
+    color: var(--ion-color-medium);
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  form {
+    ion-item {
+      --background: transparent;
+      --border-color: var(--ion-color-medium);
+      margin-bottom: 16px;
+    }
+
+    ion-note {
+      margin: -12px 0 16px 16px;
+      font-size: 12px;
+    }
+
+    ion-button {
+      margin-top: 24px;
+      --border-radius: 8px;
+      height: 48px;
+    }
+  }
+
+  .register-link {
+    margin-top: 24px;
+    text-align: center;
+
+    p {
+      margin: 0;
+      font-size: 14px;
+    }
+
+    a {
+      color: var(--ion-color-primary);
+      text-decoration: none;
+      font-weight: 600;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+// Modo escuro
+:host-context(.dark) {
+  .login-content {
+    background: var(--ion-color-step-150);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+
+    h1 {
+      color: var(--ion-color-light);
+    }
+  }
+} 

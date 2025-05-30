@@ -1,0 +1,47 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="login-container">
+    <div class="login-content">
+      <h1>Bem-vindo</h1>
+      <p>Faça login para continuar</p>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <ion-item>
+          <ion-label position="floating">Email</ion-label>
+          <ion-input type="email" formControlName="email"></ion-input>
+        </ion-item>
+        <ion-note color="danger" *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.errors?.['required']">
+          Email é obrigatório
+        </ion-note>
+        <ion-note color="danger" *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.errors?.['email']">
+          Email inválido
+        </ion-note>
+
+        <ion-item>
+          <ion-label position="floating">Senha</ion-label>
+          <ion-input type="password" formControlName="password"></ion-input>
+        </ion-item>
+        <ion-note color="danger" *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.errors?.['required']">
+          Senha é obrigatória
+        </ion-note>
+        <ion-note color="danger" *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.errors?.['minlength']">
+          Senha deve ter no mínimo 6 caracteres
+        </ion-note>
+
+        <ion-button expand="block" type="submit" [disabled]="!loginForm.valid || isLoading">
+          <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+          <span *ngIf="!isLoading">Entrar</span>
+        </ion-button>
+      </form>
+
+      <div class="register-link">
+        <p>Não tem uma conta? <a routerLink="/register">Registre-se</a></p>
+      </div>
+    </div>
+  </div>
+</ion-content> 

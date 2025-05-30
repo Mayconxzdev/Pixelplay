@@ -20,13 +20,12 @@ export const environment = {
 
   // Firebase Configuration
   firebase: {
-    apiKey: "AIzaSyD9ayXuOmAxa7vAIaur_GSbtGeSqQcYHzI",
-    authDomain: "pixelplay-17d96.firebaseapp.com",
-    projectId: "pixelplay-17d96",
-    storageBucket: "pixelplay-17d96.appspot.com",
-    messagingSenderId: "319799963963",
-    appId: "1:319799963963:web:a6cf12b352d56e6daa071e",
-    measurementId: "G-7EV0QM96QS"
+    apiKey: "AIzaSyDXsuz7ci10-ynTofLP1u6AqlucjLziwdA",
+    authDomain: "pixelplay-5bc50.firebaseapp.com",
+    projectId: "pixelplay-5bc50",
+    storageBucket: "pixelplay-5bc50.firebasestorage.app",
+    messagingSenderId: "789800619171",
+    appId: "1:789800619171:web:c930cdd789996f372a0316"
   }
 };
 
