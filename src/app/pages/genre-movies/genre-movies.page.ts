@@ -8,7 +8,6 @@ import { MovieService } from '../../core/services/movie.service';
 import { GenreService } from '../../core/services/genre.service';
 import { Subscription } from 'rxjs';
 import { MovieCardComponent } from '../../shared/components/movie-card/movie-card.component';
-import { DecimalPipe, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-genre-movies',
@@ -20,9 +19,7 @@ import { DecimalPipe, DatePipe } from '@angular/common';
     FormsModule,
     IonicModule,
     RouterModule,
-    MovieCardComponent,
-    DecimalPipe,
-    DatePipe
+    MovieCardComponent
   ]
 })
 export class GenreMoviesPage implements OnInit, OnDestroy {

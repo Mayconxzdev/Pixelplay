@@ -5,6 +5,11 @@ import { routes } from './app/app.routes';
 import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
+import { addIcons } from 'ionicons';
+import {
+  heartOutline, star, starOutline, film, flame, calendar, informationCircle, chevronForwardOutline,
+  closeCircle, search, trashOutline, timeOutline, pricetag, arrowBack
+} from 'ionicons/icons';
 
 // Serviços
 import { ApiService } from './app/core/services/api.service';
@@ -17,6 +22,23 @@ import { FeaturedService } from './app/core/services/featured.service';
 import appConfig from './app/app.config';
 
 registerLocaleData(localePt);
+
+addIcons({
+  'heart-outline': heartOutline,
+  'star': star,
+  'star-outline': starOutline,
+  'film': film,
+  'flame': flame,
+  'calendar': calendar,
+  'information-circle': informationCircle,
+  'chevron-forward-outline': chevronForwardOutline,
+  'close-circle': closeCircle,
+  'search': search,
+  'trash-outline': trashOutline,
+  'time-outline': timeOutline,
+  'pricetag': pricetag,
+  'arrow-back': arrowBack
+});
 
 // Adiciona os provedores específicos do main.ts ao appConfig
 const mainProviders = [

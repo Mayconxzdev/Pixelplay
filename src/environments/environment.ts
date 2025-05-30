@@ -16,7 +16,18 @@ export const environment = {
   
   // Feature Flags
   enableAnalytics: false,
-  enableErrorLogging: true
+  enableErrorLogging: true,
+
+  // Firebase Configuration
+  firebase: {
+    apiKey: "AIzaSyD9ayXuOmAxa7vAIaur_GSbtGeSqQcYHzI",
+    authDomain: "pixelplay-17d96.firebaseapp.com",
+    projectId: "pixelplay-17d96",
+    storageBucket: "pixelplay-17d96.appspot.com",
+    messagingSenderId: "319799963963",
+    appId: "1:319799963963:web:a6cf12b352d56e6daa071e",
+    measurementId: "G-7EV0QM96QS"
+  }
 };
 
 /*

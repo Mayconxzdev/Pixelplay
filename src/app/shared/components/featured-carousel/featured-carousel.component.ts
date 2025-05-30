@@ -99,15 +99,19 @@ export class FeaturedCarouselComponent implements OnInit, AfterViewInit, OnDestr
 
   ngOnChanges(changes: SimpleChanges) {
     // Atualiza o Swiper quando os filmes são carregados ou alterados
-    if (changes['movies'] && !changes['movies'].firstChange && this.swiper) {
-      // Usa setTimeout para garantir que a atualização ocorra após o ciclo de detecção de mudanças
-      setTimeout(() => {
-        if (this.swiper) {
-          this.swiper.update();
-          // Força uma nova renderização
-          this.swiper.slideTo(0, 0);
+    if (changes['movies'] && this.movies && this.movies.length > 0) {
+      // Se já existe um Swiper, destrói antes de criar outro
+      if (this.swiper) {
+        if (!this.swiper.destroyed) {
+          this.swiper.destroy(true, true);
         }
-      }, 0);
+        this.swiper = null;
+      }
+      // Inicializa o Swiper novamente
+      this.initSwiper();
+      // Garante que o loading desapareça
+      this.swiperLoading = false;
+      this.cdr.markForCheck();
     }
   }
 
@@ -420,7 +424,11 @@ export class FeaturedCarouselComponent implements OnInit, AfterViewInit, OnDestr
    */
   goToSlide(index: number): void {
     if (this.swiper && !this.swiper.destroyed) {
-      this.swiper.slideTo(index);
+      if (this.swiper.params && this.swiper.params.loop) {
+        this.swiper.slideToLoop(index);
+      } else {
+        this.swiper.slideTo(index);
+      }
       this.currentSlide = index;
       this.cdr.markForCheck();
     }

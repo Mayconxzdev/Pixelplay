@@ -79,8 +79,8 @@
               </div>
               <div class="actions">
                 <ion-button fill="clear" (click)="onMovieSelected(movie.id)">
-                  <ion-icon name="play-circle" slot="start"></ion-icon>
-                  Assistir
+                  <ion-icon name="information-circle" slot="start"></ion-icon>
+                  Detalhes
                 </ion-button>
                 <ion-button fill="clear" (click)="onFavoriteToggled(movie, $event)">
                   <ion-icon 
@@ -97,22 +97,5 @@
   </div>
 
   <!-- Pagination -->
-  <div 
-    *ngIf="!loading && !error && movies.length > 1" 
-    class="pagination"
-    role="navigation"
-    aria-label="Navegação do carrossel"
-  >
-    <button 
-      *ngFor="let _ of movies; let i = index"
-      type="button"
-      [class.active]="i === currentSlide"
-      class="pagination-dot"
-      [attr.aria-label]="'Ir para o slide ' + (i + 1) + ' de ' + movies.length"
-      [attr.aria-current]="i === currentSlide ? 'true' : null"
-      (click)="goToSlide(i)"
-      (keydown.enter)="goToSlide(i)"
-      (keydown.space)="goToSlide(i); $event.preventDefault()"
-    ></button>
-  </div>
+  <!-- Removido: bolinhas de paginação -->
 </div>

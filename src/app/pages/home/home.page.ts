@@ -39,6 +39,10 @@ export class HomePage implements OnInit {
     this.router.navigate(['/search']);
   }
 
+  navigateToLogin() {
+    this.router.navigate(['/login']);
+  }
+
   ngOnInit() {
     this.loadMovies();
   }
@@ -53,8 +57,69 @@ export class HomePage implements OnInit {
       
       // Carrega filmes em destaque (top rated)
       const featured = await this.movieService.getTopRatedMovies(1).toPromise();
-      if (featured?.results) {
-        this.featuredMovies = featured.results.slice(0, 5); // Limita a 5 filmes em destaque
+      if (featured?.results && featured.results.length > 0) {
+        // Filtra apenas filmes de nota alta
+        const highRated = featured.results.filter(f => f.vote_average >= 7.5);
+        if (highRated.length > 0) {
+          // Sorteia um filme aleatório de nota alta
+          const randomIndex = Math.floor(Math.random() * highRated.length);
+          this.featuredMovies = [highRated[randomIndex]];
+        } else {
+          // Se não houver nenhum de nota alta, pega o primeiro
+          this.featuredMovies = [featured.results[0]];
+        }
+      } else {
+        // Fallback: filmes mockados
+        this.featuredMovies = [
+          {
+            id: 1,
+            title: 'Filme Exemplo 1',
+            original_title: 'Filme Exemplo 1',
+            overview: 'Sinopse do filme exemplo 1.',
+            poster_path: '/caminho/poster1.jpg',
+            backdrop_path: '/caminho/backdrop1.jpg',
+            release_date: '2024-01-01',
+            vote_average: 8.5,
+            vote_count: 1000,
+            popularity: 100,
+            genre_ids: [28, 12],
+            original_language: 'pt',
+            video: false,
+            adult: false
+          },
+          {
+            id: 2,
+            title: 'Filme Exemplo 2',
+            original_title: 'Filme Exemplo 2',
+            overview: 'Sinopse do filme exemplo 2.',
+            poster_path: '/caminho/poster2.jpg',
+            backdrop_path: '/caminho/backdrop2.jpg',
+            release_date: '2024-02-01',
+            vote_average: 7.9,
+            vote_count: 800,
+            popularity: 80,
+            genre_ids: [16, 35],
+            original_language: 'en',
+            video: false,
+            adult: false
+          },
+          {
+            id: 3,
+            title: 'Filme Exemplo 3',
+            original_title: 'Filme Exemplo 3',
+            overview: 'Sinopse do filme exemplo 3.',
+            poster_path: '/caminho/poster3.jpg',
+            backdrop_path: '/caminho/backdrop3.jpg',
+            release_date: '2024-03-01',
+            vote_average: 7.5,
+            vote_count: 600,
+            popularity: 60,
+            genre_ids: [18, 80],
+            original_language: 'es',
+            video: false,
+            adult: false
+          }
+        ];
       }
       
       // Carrega filmes populares para as indicações (com paginação aleatória) - apenas no carregamento inicial

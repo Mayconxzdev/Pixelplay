@@ -28,6 +28,25 @@
 </ion-header>
 
 <ion-content>
+  <!-- Histórico de busca -->
+  <div *ngIf="(!searchQuery || searchQuery.trim().length <= 2) && searchHistory.length > 0" class="history-container ion-padding">
+    <ion-list-header class="ion-no-padding ion-margin-top">
+      <ion-label>Histórico de buscas</ion-label>
+      <ion-button fill="clear" size="small" color="medium" (click)="clearSearchHistory()">
+        <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-list-header>
+    <div class="suggestion-chips">
+      <ion-chip *ngFor="let term of searchHistory; trackBy: trackByTerm"
+                (click)="setSearchTerm(term)"
+                color="tertiary"
+                outline>
+        <ion-icon name="time-outline" class="ion-margin-end"></ion-icon>
+        {{ term }}
+      </ion-chip>
+    </div>
+  </div>
+
   <!-- Sugestões -->
   <div *ngIf="!searchQuery || searchQuery.trim().length <= 2" class="suggestions-container ion-padding">
     <h2 class="ion-text-center ion-margin-bottom">Bem-vindo ao PixelPlay</h2>

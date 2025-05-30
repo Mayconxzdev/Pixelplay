@@ -37,6 +37,9 @@ export class SearchPage implements OnInit, OnDestroy {
   totalResults: number = 0;
   isSearchingByGenre: boolean = false;
   currentGenreId: number | null = null;
+  searchHistory: string[] = [];
+  private readonly HISTORY_KEY = 'searchHistory';
+  private readonly HISTORY_LIMIT = 10;
 
   constructor(
     private movieService: MovieService,
@@ -54,6 +57,7 @@ export class SearchPage implements OnInit, OnDestroy {
       .subscribe(genres => {
         this.genres = genres;
       });
+    this.loadSearchHistory();
   }
   
   ngOnDestroy() {
@@ -121,6 +125,7 @@ export class SearchPage implements OnInit, OnDestroy {
       if (page === 1) {
         this.searchResults = [];
         this.isLoading = true;
+        this.saveSearchHistory(query);
       }
       
       // Se for uma busca por gênero
@@ -217,6 +222,7 @@ export class SearchPage implements OnInit, OnDestroy {
   setSearchTerm(term: string) {
     this.searchQuery = term;
     this.performSearch(term, 1, this.isGenre(term));
+    this.saveSearchHistory(term);
   }
   
   // Manipula erros de carregamento de imagem
@@ -289,5 +295,25 @@ export class SearchPage implements OnInit, OnDestroy {
       ]
     });
     await toast.present();
+  }
+
+  private loadSearchHistory() {
+    const history = localStorage.getItem(this.HISTORY_KEY);
+    this.searchHistory = history ? JSON.parse(history) : [];
+  }
+
+  private saveSearchHistory(term: string) {
+    term = term.trim();
+    if (!term) return;
+    // Remove duplicatas e adiciona no início
+    this.searchHistory = [term, ...this.searchHistory.filter(t => t.toLowerCase() !== term.toLowerCase())];
+    // Limita o tamanho do histórico
+    this.searchHistory = this.searchHistory.slice(0, this.HISTORY_LIMIT);
+    localStorage.setItem(this.HISTORY_KEY, JSON.stringify(this.searchHistory));
+  }
+
+  clearSearchHistory() {
+    this.searchHistory = [];
+    localStorage.removeItem(this.HISTORY_KEY);
   }
 }
