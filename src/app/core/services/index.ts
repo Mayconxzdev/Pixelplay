@@ -5,3 +5,4 @@ export * from './genre.service';
 export * from './favorite.service';
 export * from './toast.service';
 export * from './featured.service';
+export * from './auth.service';

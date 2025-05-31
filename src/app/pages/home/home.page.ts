@@ -8,6 +8,8 @@ import { Movie } from '../../shared/models/movie.model';
 import { MovieListComponent } from '../../shared/components/movie-list/movie-list.component';
 import { FeaturedCarouselComponent } from '../../shared/components/featured-carousel/featured-carousel.component';
 import { CategoriesComponent } from '../../shared/components/categories/categories.component';
+import { PopoverController } from '@ionic/angular';
+import { LoginPopoverComponent } from '../../shared/components/login-popover/login-popover.component';
 
 @Component({
   selector: 'app-home',
@@ -32,7 +34,8 @@ export class HomePage implements OnInit {
 
   constructor(
     private movieService: MovieService,
-    private router: Router
+    private router: Router,
+    private popoverCtrl: PopoverController
   ) {}
 
   navigateToSearch() {
@@ -234,5 +237,15 @@ export class HomePage implements OnInit {
 
   onMovieSelected(movieId: number) {
     this.router.navigate(['/movie', movieId]);
+  }
+
+  async openLoginPopover(ev: Event) {
+    const popover = await this.popoverCtrl.create({
+      component: LoginPopoverComponent,
+      event: ev,
+      dismissOnSelect: true,
+      cssClass: 'login-popover'
+    });
+    await popover.present();
   }
 }
