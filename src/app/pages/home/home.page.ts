@@ -46,6 +46,10 @@ export class HomePage implements OnInit {
     this.router.navigate(['/login']);
   }
 
+  navigateToAbout() {
+    this.router.navigate(['/about']);
+  }
+
   ngOnInit() {
     this.loadMovies();
   }

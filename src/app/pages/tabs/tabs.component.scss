@@ -1,3 +1,45 @@
+ion-header {
+  ion-toolbar {
+    --background: var(--ion-color-primary);
+    --color: var(--ion-color-light);
+    
+    ion-title {
+      color: var(--ion-color-light);
+      font-weight: 600;
+    }
+    
+    ion-buttons {
+      margin-right: 8px;
+      
+      ion-button {
+        --color: var(--ion-color-light);
+        --background-hover: rgba(255, 255, 255, 0.1);
+        --border-radius: 50%;
+        --padding-start: 8px;
+        --padding-end: 8px;
+        width: 48px;
+        height: 48px;
+        margin: 0;
+        
+        &.about-button {
+          --ripple-color: var(--ion-color-light);
+          
+          ion-icon.about-icon {
+            font-size: 1.8rem;
+            color: var(--ion-color-light);
+            opacity: 0.9;
+            transition: opacity 0.2s ease;
+            
+            &:hover {
+              opacity: 1;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 ion-tab-bar {
   --background: var(--ion-color-primary);
   --color: var(--ion-color-light);

@@ -21,9 +21,7 @@ import { HomePageRoutingModule } from './home-routing.module';
     HttpClientModule,
     IonicModule,
     SharedModule,
-    HomePageRoutingModule,
-    // Importa o HomePage como standalone
-    HomePage
+    HomePageRoutingModule
   ]
 })
 export class HomePageModule {}

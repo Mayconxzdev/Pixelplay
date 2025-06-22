@@ -45,6 +45,11 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/genre-movies/genre-movies.page').then(m => m.GenreMoviesPage),
   },
   {
+    path: 'about',
+    loadComponent: () => import('./pages/about/about.page').then(m => m.AboutPage),
+    data: { title: 'Sobre Nós' }
+  },
+  {
     path: '**',
     redirectTo: 'tabs/home',
     pathMatch: 'full'

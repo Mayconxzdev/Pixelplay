@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { addIcons } from 'ionicons';
-import { close, mail, logoGoogle, logIn, personCircle, heart, personAdd } from 'ionicons/icons';
+import { close, mail, logoGoogle, logIn, personCircle, heart, personAdd, informationCircleOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-root',
@@ -29,7 +29,8 @@ export class AppComponent {
       logIn,
       personCircle,
       heart,
-      personAdd
+      personAdd,
+      informationCircleOutline
     });
   }
 }
