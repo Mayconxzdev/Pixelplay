@@ -7,54 +7,94 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="ion-padding">
+<ion-content [fullscreen]="true">
   <div class="about-container">
-    <div class="header-content">
-      <h1>Conheça Nossa Equipe</h1>
-      <p>Desenvolvido com ❤️ pelo time PixelPlay</p>
-    </div>
-
-    <div class="team-grid">
-      <ion-card *ngFor="let member of teamMembers" class="team-member">
-        <div class="member-image">
-          <img [src]="member.image" [alt]="member.name" (error)="onImageError($event)">
-        </div>
-        <ion-card-header>
-          <ion-card-title>{{ member.name }}</ion-card-title>
-          <ion-card-subtitle>{{ member.role }}</ion-card-subtitle>
-        </ion-card-header>
-        
-        <ion-card-content>
-          <p>{{ member.description }}</p>
-          
-          <div class="social-links" *ngIf="member.socialLinks">
-            <a *ngIf="member.socialLinks.github" [href]="member.socialLinks.github" target="_blank" rel="noopener">
-              <ion-icon name="logo-github"></ion-icon>
-            </a>
-            <a *ngIf="member.socialLinks.linkedin" [href]="member.socialLinks.linkedin" target="_blank" rel="noopener">
-              <ion-icon name="logo-linkedin"></ion-icon>
-            </a>
-            <a *ngIf="member.socialLinks.email" [href]="'mailto:' + member.socialLinks.email">
-              <ion-icon name="mail"></ion-icon>
-            </a>
-          </div>
-        </ion-card-content>
-      </ion-card>
-    </div>
-
-    <div class="app-info">
-      <h2>Sobre o PixelPlay</h2>
-      <p>O PixelPlay é um aplicativo desenvolvido como parte do nosso projeto acadêmico, com o objetivo de proporcionar uma experiência incrível na descoberta e exploração de filmes.</p>
+    <!-- Seção de Boas-vindas -->
+    <section class="welcome-section">
+      <div class="logo-container">
+        <ion-icon name="film" class="app-logo"></ion-icon>
+        <h1>{{ projectDescription.title }}</h1>
+      </div>
+      <p class="lead">{{ projectDescription.content }}</p>
       
       <div class="tech-stack">
         <h3>Tecnologias Utilizadas</h3>
         <div class="tech-badges">
-          <ion-badge color="primary">Angular</ion-badge>
-          <ion-badge color="secondary">Ionic</ion-badge>
-          <ion-badge color="tertiary">Firebase</ion-badge>
-          <ion-badge color="success">TMDb API</ion-badge>
+          <ion-badge *ngFor="let tech of projectDescription.stack" color="primary">
+            {{ tech }}
+          </ion-badge>
         </div>
       </div>
-    </div>
+    </section>
+
+    <!-- Seção da Missão -->
+    <section class="mission-section">
+      <h2>{{ missionStatement.title }}</h2>
+      <p>{{ missionStatement.content }}</p>
+    </section>
+
+    <!-- Seção da Equipe -->
+    <section class="team-section">
+      <div class="section-header">
+        <h2>Nossa Equipe</h2>
+        <p>Conheça as mentes criativas por trás do PixelPlay</p>
+      </div>
+
+      <div class="team-grid">
+        <ion-card *ngFor="let member of teamMembers" class="team-member">
+          <div class="member-image">
+            <img [src]="member.image" [alt]="member.name" (error)="onImageError($event)" loading="lazy">
+            <div class="member-overlay">
+              <div class="social-links">
+                <a *ngIf="member.socialLinks.github" [href]="member.socialLinks.github" target="_blank" rel="noopener" aria-label="GitHub">
+                  <ion-icon name="logo-github"></ion-icon>
+                </a>
+                <a *ngIf="member.socialLinks.linkedin" [href]="member.socialLinks.linkedin" target="_blank" rel="noopener" aria-label="LinkedIn">
+                  <ion-icon name="logo-linkedin"></ion-icon>
+                </a>
+                <a *ngIf="member.socialLinks.email" [href]="'mailto:' + member.socialLinks.email" aria-label="E-mail">
+                  <ion-icon name="mail"></ion-icon>
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <ion-card-header>
+            <ion-card-title>{{ member.name }}</ion-card-title>
+            <ion-card-subtitle>{{ member.role }}</ion-card-subtitle>
+          </ion-card-header>
+          
+          <ion-card-content>
+            <p class="member-description">{{ member.description }}</p>
+            
+            <div class="responsibilities">
+              <h4>Responsabilidades:</h4>
+              <ul>
+                <li *ngFor="let resp of member.responsibilities">{{ resp }}</li>
+              </ul>
+            </div>
+            
+            <div class="technologies">
+              <h4>Tecnologias:</h4>
+              <div class="tech-tags">
+                <span *ngFor="let tech of member.technologies" class="tech-tag">
+                  {{ tech }}
+                </span>
+              </div>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </section>
+
+    <!-- Seção de Chamada para Ação -->
+    <section class="cta-section">
+      <h2>Pronto para começar?</h2>
+      <p>Explore o mundo do cinema com o PixelPlay e descubra seus próximos filmes favoritos.</p>
+      <ion-button expand="block" fill="solid" color="primary" routerLink="/tabs/home">
+        <ion-icon slot="start" name="play"></ion-icon>
+        Começar a Explorar
+      </ion-button>
+    </section>
   </div>
 </ion-content>
