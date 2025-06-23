@@ -1,0 +1,29 @@
+# Incluir tudo
+*
+
+# Exceções (não incluir)
+!src/
+!angular.json
+!package.json
+!package-lock.json
+!tsconfig.json
+!ionic.config.json
+!capacitor.config.ts
+!README.md
+!.gitignore
+
+# Excluir pastas específicas
+node_modules/
+www/
+android/
+.angular/
+.idea/
+.vscode/
+
+# Excluir arquivos específicos
+*.log
+*.tmp
+*.tmp.*
+*.zip
+*.tar
+*.gz
