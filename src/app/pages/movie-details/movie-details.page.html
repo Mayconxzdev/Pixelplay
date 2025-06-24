@@ -140,8 +140,8 @@
             <img [src]="'https://image.tmdb.org/t/p/w200' + (person?.profile_path || '')" 
                  [alt]="person?.name || 'Ator'" 
                  loading="lazy"
-                 onerror="this.src='assets/placeholder-actor.png'"
-                 defaultImage="assets/placeholder-actor.png">
+                 onerror="this.src='https://via.placeholder.com/200x300/333333/ffffff?text=Sem+Foto'"
+                 defaultImage="https://via.placeholder.com/200x300/333333/ffffff?text=Carregando...">
             <h4>{{ person?.name || 'Nome não disponível' }}</h4>
             <p>{{ person?.character || 'Personagem não disponível' }}</p>
           </div>

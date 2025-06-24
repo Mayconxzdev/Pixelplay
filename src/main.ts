@@ -1,26 +1,18 @@
-import { enableProdMode, importProvidersFrom } from '@angular/core';
+import { enableProdMode } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
-import { RouteReuseStrategy, provideRouter } from '@angular/router';
-import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalone';
-import { routes } from './app/app.routes';
+import { RouteReuseStrategy } from '@angular/router';
+import { IonicRouteStrategy } from '@ionic/angular/standalone';
 import { AppComponent } from './app/app.component';
 import { environment } from './environments/environment';
-import { provideHttpClient } from '@angular/common/http';
-import { IonicStorageModule } from '@ionic/storage-angular';
-import { provideStore } from '@ngrx/store';
-import { provideEffects } from '@ngrx/effects';
-import { provideStoreDevtools } from '@ngrx/store-devtools';
-import { isDevMode } from '@angular/core';
-import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
-import { provideAuth, getAuth } from '@angular/fire/auth';
-import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
 import { addIcons } from 'ionicons';
 import {
-  heartOutline, star, starOutline, film, flame, calendar, informationCircle, chevronForwardOutline,
-  closeCircle, search, trashOutline, timeOutline, pricetag, arrowBack
+  heartOutline, star, starOutline, film, filmOutline, flame, calendar, informationCircle, chevronForwardOutline,
+  closeCircle, search, trashOutline, timeOutline, pricetag, arrowBack, close, logIn, logoGoogle, personAdd,
+  warningOutline, heart, sadOutline, refresh, refreshOutline, arrowUp, alertCircleOutline, calendarOutline,
+  languageOutline, videocamOffOutline, personCircle, informationCircleOutline, heartDislikeOutline
 } from 'ionicons/icons';
 
 // Serviços
@@ -30,59 +22,72 @@ import { MovieService } from './app/core/services/movie.service';
 import { GenreService } from './app/core/services/genre.service';
 import { FeaturedService } from './app/core/services/featured.service';
 
+// Configurações da aplicação
+import { appConfig } from './app/app.config';
+
 if (environment.production) {
   enableProdMode();
 }
 
+// Configuração do locale para português
 registerLocaleData(localePt);
 
+// Registra os ícones usados na aplicação
 addIcons({
+  // Ícones básicos
+  'heart': heart,
   'heart-outline': heartOutline,
+  'heart-dislike-outline': heartDislikeOutline,
   'star': star,
   'star-outline': starOutline,
   'film': film,
+  'film-outline': filmOutline,
   'flame': flame,
   'calendar': calendar,
+  'calendar-outline': calendarOutline,
   'information-circle': informationCircle,
+  'information-circle-outline': informationCircleOutline,
+  'chevron-forward': chevronForwardOutline,
   'chevron-forward-outline': chevronForwardOutline,
+  'close': close,
   'close-circle': closeCircle,
   'search': search,
+  'search-outline': search,
   'trash-outline': trashOutline,
   'time-outline': timeOutline,
   'pricetag': pricetag,
-  'arrow-back': arrowBack
+  'arrow-back': arrowBack,
+  'arrow-up': arrowUp,
+  'refresh': refresh,
+  'refresh-outline': refreshOutline,
+  'sad-outline': sadOutline,
+  'warning-outline': warningOutline,
+  'alert-circle-outline': alertCircleOutline,
+  'language-outline': languageOutline,
+  'videocam-off-outline': videocamOffOutline,
+  'person-circle': personCircle,
+  'log-in': logIn,
+  'logo-google': logoGoogle,
+  'person-add': personAdd
 });
 
-// Adiciona os provedores específicos do main.ts ao appConfig
+// Provedores específicos do main.ts
 const mainProviders = [
   { provide: LOCALE_ID, useValue: 'pt' },
   { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-  provideRouter(routes),
-  provideHttpClient(),
-  provideIonicAngular(),
-  importProvidersFrom(IonicStorageModule.forRoot()),
-  provideStore({}),
-  provideEffects([]),
-  provideStoreDevtools({
-    maxAge: 25,
-    logOnly: !isDevMode(),
-    autoPause: true,
-    trace: false,
-    traceLimit: 75
-  }),
-  provideFirebaseApp(() => initializeApp(environment.firebase)),
-  provideAuth(() => getAuth()),
-  provideFirestore(() => getFirestore()),
-  // Provedores de serviços
+  // Serviços da aplicação
   ApiService,
   StorageService,
   MovieService,
   GenreService,
-  FeaturedService,
+  FeaturedService
 ];
 
+// Combina as configurações do appConfig com os provedores específicos do main.ts
 bootstrapApplication(AppComponent, {
+  ...appConfig,
   providers: [
+    ...(appConfig.providers || []),
     ...mainProviders
   ]
 } as any).catch(err => console.error('Erro ao iniciar a aplicação:', err));
