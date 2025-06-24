@@ -74,19 +74,33 @@
 }
 
 .genre-chip {
-  --background: var(--ion-color-light);
-  --color: var(--ion-color-dark);
+  --background: var(--ion-color-step-200);
+  --color: var(--ion-text-color);
   --border-radius: 20px;
   --padding-start: 16px;
   --padding-end: 16px;
   height: 40px;
   cursor: pointer;
-  transition: transform 0.2s ease, background-color 0.2s ease;
+  transition: all 0.2s ease;
+  border: 1px solid var(--ion-color-step-300);
+  font-weight: 500;
+  margin: 2px;
 
   &:hover {
     --background: var(--ion-color-primary);
     --color: var(--ion-color-primary-contrast);
     transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(var(--ion-color-primary-rgb), 0.3);
+  }
+  
+  &:active {
+    transform: scale(0.98);
+  }
+  
+  ion-label {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 
