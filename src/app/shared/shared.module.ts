@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { MovieCardComponent } from './components/movie-card/movie-card.component';
 import { MovieListComponent } from './components/movie-list/movie-list.component';
 import { CategoriesComponent } from './components/categories/categories.component';
+import { ThemeToggleComponent } from './components/theme-toggle/theme-toggle.component';
 
 // Pipes
 import { DateFormatPipe } from './pipes/date-format.pipe';
@@ -25,13 +26,15 @@ import { TruncatePipe } from './pipes/truncate.pipe';
     // Importa os componentes standalone
     MovieCardComponent,
     MovieListComponent,
-    CategoriesComponent
+    CategoriesComponent,
+    ThemeToggleComponent
   ],
   exports: [
     // Exporta os componentes standalone
     MovieCardComponent,
     MovieListComponent,
     CategoriesComponent,
+    ThemeToggleComponent,
     // Exporta os pipes standalone
     TruncatePipe,
     DateFormatPipe,

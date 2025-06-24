@@ -1,0 +1,21 @@
+.theme-toggle {
+  --padding-start: 8px;
+  --padding-end: 8px;
+  --padding-top: 8px;
+  --padding-bottom: 8px;
+  margin: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  
+  &:active {
+    transform: scale(0.9);
+  }
+  
+  ion-icon {
+    font-size: 1.5rem;
+    transition: transform 0.3s ease;
+  }
+  
+  &:hover {
+    opacity: 0.8;
+  }
+}

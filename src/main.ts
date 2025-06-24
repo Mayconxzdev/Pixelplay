@@ -12,8 +12,10 @@ import {
   heartOutline, star, starOutline, film, filmOutline, flame, calendar, informationCircle, chevronForwardOutline,
   closeCircle, search, trashOutline, timeOutline, pricetag, arrowBack, close, logIn, logoGoogle, personAdd,
   warningOutline, heart, sadOutline, refresh, refreshOutline, arrowUp, alertCircleOutline, calendarOutline,
-  languageOutline, videocamOffOutline, personCircle, informationCircleOutline, heartDislikeOutline
+  languageOutline, videocamOffOutline, personCircle, informationCircleOutline, heartDislikeOutline,
+  sunny, moon
 } from 'ionicons/icons';
+import { IonicStorageModule } from '@ionic/storage-angular';
 
 // Serviços
 import { ApiService } from './app/core/services/api.service';
@@ -48,6 +50,8 @@ addIcons({
   'information-circle': informationCircle,
   'information-circle-outline': informationCircleOutline,
   'chevron-forward': chevronForwardOutline,
+  'sunny': sunny,
+  'moon': moon,
   'chevron-forward-outline': chevronForwardOutline,
   'close': close,
   'close-circle': closeCircle,

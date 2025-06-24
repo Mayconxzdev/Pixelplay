@@ -17,8 +17,8 @@
 }
 
 ion-content {
-  --background: var(--ion-color-light);
-  --color: var(--ion-color-dark);
+  --background: var(--ion-background-color);
+  --color: var(--ion-text-color);
   --padding-top: 0;
   --padding-start: 0;
   --padding-end: 0;
@@ -31,8 +31,8 @@ ion-content {
 }
 
 ion-toolbar {
-  --background: transparent;
-  --color: white;
+  --background: var(--ion-background-color);
+  --color: var(--ion-text-color);
   --border-width: 0;
   position: fixed;
   top: 0;
@@ -40,6 +40,8 @@ ion-toolbar {
   right: 0;
   z-index: 1000;
   padding: 8px 16px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, color 0.3s ease;
   
   .header-content {
     display: flex;
@@ -48,26 +50,25 @@ ion-toolbar {
     position: relative;
     
     .back-button {
-      background: rgba(0, 0, 0, 0.7);
-      border: none;
+      background: var(--ion-color-step-100, rgba(0, 0, 0, 0.5));
       border-radius: 50%;
-      width: 40px;
-      height: 40px;
+      width: 36px;
+      height: 36px;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 0;
-      margin: 0;
+      color: var(--ion-text-color);
+      border: 1px solid var(--ion-color-step-200, rgba(0, 0, 0, 0.1));
       cursor: pointer;
-      z-index: 1001;
+      transition: all 0.2s ease;
       
-      ion-icon {
-        color: white;
-        font-size: 24px;
+      &:hover {
+        background: var(--ion-color-step-200, rgba(0, 0, 0, 0.7));
+        transform: translateX(-2px);
       }
       
-      &:active {
-        transform: scale(0.9);
+      ion-icon {
+        font-size: 1.4rem;
       }
     }
     
@@ -141,7 +142,9 @@ ion-toolbar {
       margin: 0;
       --border-radius: 50%;
       transition: transform 0.2s ease, background-color 0.2s ease;
-      will-change: transform;
+      
+      // Removido will-change do botão para melhor desempenho
+      // A transformação é leve e não requer otimização específica
       
       &::part(native) {
         overflow: visible;
@@ -256,12 +259,15 @@ ion-toolbar {
 }
 
 .movie-details {
+  --background: var(--ion-background-color);
+  --color: var(--ion-text-color);
   background: var(--ion-background-color, #ffffff);
+  color: var(--ion-text-color, #000000);
   min-height: 100%;
   animation: fadeIn 0.6s ease-out forwards;
   opacity: 0;
   transform: translateY(10px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition: opacity 0.5s ease, transform 0.5s ease, color 0.3s ease, background-color 0.3s ease;
   
   &.loaded {
     opacity: 1;
@@ -272,7 +278,7 @@ ion-toolbar {
   padding-left: env(safe-area-inset-left, 0);
   padding-right: env(safe-area-inset-right, 0);
   padding-bottom: env(safe-area-inset-bottom, 0);
-  will-change: transform, opacity;
+  // Removido will-change desnecessário para melhor desempenho
   backface-visibility: hidden;
   transform: translateZ(0);
   
@@ -290,6 +296,7 @@ ion-toolbar {
     height: var(--backdrop-height);
     overflow: hidden;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    background: var(--ion-background-color);
     
     &::after {
       content: '';
@@ -298,11 +305,7 @@ ion-toolbar {
       left: 0;
       right: 0;
       bottom: 0;
-      background: linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 0.3) 0%,
-        rgba(0, 0, 0, 0.6) 100%
-      );
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%);
       z-index: 1;
     }
     
@@ -310,8 +313,9 @@ ion-toolbar {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.8s ease;
-      will-change: transform;
+      object-position: center;
+      opacity: 0.8;
+      transition: transform 0.5s ease, opacity 0.3s ease;
     }
     
     .backdrop-overlay {
@@ -320,8 +324,20 @@ ion-toolbar {
       left: 0;
       right: 0;
       height: 60%;
-      background: linear-gradient(to top, var(--ion-background-color, #ffffff), transparent);
+      background: linear-gradient(
+        to bottom, 
+        transparent 0%, 
+        var(--ion-background-color) 100%
+      );
       z-index: 2;
+    }
+    
+    &.no-backdrop-image {
+      background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-secondary) 100%);
+      
+      img {
+        display: none; /* Esconde a imagem quebrada */
+      }
     }
   }
   
@@ -329,18 +345,20 @@ ion-toolbar {
     position: relative;
     padding: 0 var(--info-padding);
     margin-top: -60px;
-    z-index: 3;
+    z-index: 2;
+    background: var(--ion-background-color);
+    border-radius: 16px;
+    margin: 1rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    color: var(--ion-text-color);
     display: flex;
     gap: 1.5rem;
     
-    .poster-container {
-      flex: 0 0 var(--poster-width);
-      border-radius: 12px;
-      overflow: hidden;
+    .info-container {
       box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
       transform: translateY(0);
       transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-      will-change: transform, box-shadow;
+      // Removido will-change desnecessário para melhor desempenho
       
       &:hover {
         transform: translateY(-5px);
@@ -371,7 +389,7 @@ ion-toolbar {
           margin: 0;
           font-size: 1.8rem;
           font-weight: 800;
-          color: var(--ion-color-dark);
+          color: var(--ion-text-color);
           line-height: 1.2;
           flex: 1;
           min-width: 0;
@@ -441,31 +459,23 @@ ion-toolbar {
       .details {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.75rem;
-        margin-bottom: 1.5rem;
+        gap: 1.5rem;
+        margin: 1.5rem 0;
         
         .detail {
-          display: inline-flex;
+          display: flex;
           align-items: center;
-          background: var(--ion-color-light-shade);
-          color: var(--ion-color-medium);
-          padding: 0.5rem 1rem;
-          border-radius: 8px;
-          font-size: 0.9rem;
-          font-weight: 500;
-          transition: all 0.2s ease;
+          gap: 0.5rem;
+          color: var(--ion-text-color);
+          opacity: 0.9;
+          font-size: 0.95rem;
           
           ion-icon {
             color: var(--ion-color-primary);
-            margin-right: 0.5rem;
-            font-size: 1.1em;
-            min-width: 20px;
+            font-size: 1.2rem;
+            opacity: 0.9;
           }
-          
-          &:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-          }
+          transition: all 0.2s ease;
         }
       }
       
@@ -529,37 +539,24 @@ ion-toolbar {
     
     .overview {
       background: var(--ion-card-background);
-      border-radius: 16px;
       padding: 1.5rem;
-      margin-bottom: 1.5rem;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-      transition: all 0.3s ease;
-      
-      &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-      }
+      border-radius: 12px;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      color: var(--ion-text-color);
       
       h3 {
-        margin: 0 0 1rem;
-        font-size: 1.25rem;
-        font-weight: 700;
-        color: var(--ion-color-dark);
-        display: flex;
-        align-items: center;
-        
-        ion-icon {
-          color: var(--ion-color-primary);
-          margin-right: 0.75rem;
-          font-size: 1.4em;
-        }
+        margin-top: 0;
+        margin-bottom: 1rem;
+        color: var(--ion-text-color);
+        font-size: 1.3rem;
+        font-weight: 600;
       }
       
       p {
         margin: 0;
-        font-size: 1rem;
         line-height: 1.7;
-        color: var(--ion-color-dark);
+        color: var(--ion-text-color);
         opacity: 0.9;
       }
     }
@@ -578,7 +575,7 @@ ion-toolbar {
         margin: 0;
         font-size: 1.5rem;
         font-weight: 600;
-        color: var(--ion-color-dark);
+        color: var(--ion-text-color);
       }
       
       .toggle-trailer-btn {
@@ -605,7 +602,7 @@ ion-toolbar {
         margin: 0 0 1.5rem;
         font-size: 1.5rem;
         font-weight: 700;
-        color: var(--ion-color-dark);
+        color: var(--ion-text-color);
         padding-bottom: 0.75rem;
         
         &::after {
@@ -745,6 +742,7 @@ ion-toolbar {
           width: 100%;
           height: 160px;
           object-fit: cover;
+          object-position: center;
           border-radius: 8px 8px 0 0;
           transition: transform 0.3s ease;
         }
@@ -1079,15 +1077,9 @@ ion-toolbar {
 /* Dark mode toolbar styles */
 @media (prefers-color-scheme: dark) {
   ion-toolbar {
-    --background: rgba(18, 18, 18, 0.8);
+    --background: var(--ion-background-color);
+    --color: var(--ion-text-color);
     backdrop-filter: blur(10px);
-    padding-top: env(safe-area-inset-top);
-    min-height: calc(64px + env(safe-area-inset-top));
-    
-    &::before {
-      background: linear-gradient(to bottom, rgba(18, 18, 18, 0.9) 0%, transparent 100%);
-    }
-    
     ion-title {
       padding-top: env(safe-area-inset-top);
     }

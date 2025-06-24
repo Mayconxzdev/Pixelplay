@@ -42,14 +42,23 @@
   <div *ngIf="!loading && movie" class="movie-details" [class.loaded]="!loading">
     <!-- Backdrop Image -->
     <div class="backdrop" *ngIf="movie.backdrop_path">
-      <img [src]="'https://image.tmdb.org/t/p/w1400_and_h450_face' + movie.backdrop_path" [alt]="movie.title + ' backdrop'" loading="lazy">
+      <img 
+        [src]="'https://image.tmdb.org/t/p/w1400_and_h450_face' + movie.backdrop_path" 
+        [alt]="movie.title + ' backdrop'" 
+        loading="lazy"
+        (error)="onImageError($event, 'backdrop')">
       <div class="backdrop-overlay"></div>
     </div>
 
     <!-- Movie Info -->
     <div class="movie-info">
       <div class="poster-container" *ngIf="movie.poster_path">
-        <img [src]="'https://image.tmdb.org/t/p/w300' + movie.poster_path" [alt]="movie.title + ' poster'" class="poster" loading="lazy">
+        <img 
+          [src]="'https://image.tmdb.org/t/p/w300' + movie.poster_path" 
+          [alt]="movie.title + ' poster'" 
+          class="poster" 
+          loading="lazy"
+          (error)="onImageError($event, 'poster')">
       </div>
       
       <div class="info-container">

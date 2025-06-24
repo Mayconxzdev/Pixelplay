@@ -15,7 +15,7 @@
       margin: 0;
       font-size: 1.4rem;
       font-weight: 600;
-      color: #ffffff;
+      color: var(--ion-text-color);
       letter-spacing: -0.3px;
       position: relative;
       display: inline-block;
@@ -81,11 +81,12 @@
       margin: 0 8px;
       border-radius: 12px;
       overflow: hidden;
-      background: rgba(255, 255, 255, 0.03);
+      background: var(--ion-card-background);
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       cursor: pointer;
       position: relative;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      border: 1px solid var(--ion-border-color, rgba(0, 0, 0, 0.1));
       
       &:hover {
         transform: translateY(-4px);
@@ -148,7 +149,7 @@
           height: 32px;
           border-radius: 50%;
           background: rgba(0, 0, 0, 0.7);
-          border: none;
+          border: 1px solid rgba(255, 255, 255, 0.1);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -196,7 +197,7 @@
         .title {
           font-size: 0.9rem;
           font-weight: 600;
-          color: #ffffff;
+          color: var(--ion-text-color);
           margin: 0 0 4px;
           display: -webkit-box;
           -webkit-line-clamp: 2;
@@ -210,7 +211,8 @@
         
         .release-date {
           font-size: 0.75rem;
-          color: rgba(255, 255, 255, 0.6);
+          color: var(--ion-text-color);
+          opacity: 0.7;
           margin: 0;
         }
       }
@@ -242,15 +244,23 @@
         border-radius: 10px;
         
         .details {
-          padding: 10px 8px;
+          padding: 12px 10px;
           
           .title {
-            font-size: 0.85rem;
-            height: 2.4em;
+            margin: 0 0 4px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--ion-text-color);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
           
           .release-date {
-            font-size: 0.7rem;
+            margin: 0;
+            font-size: 0.8rem;
+            color: var(--ion-text-color);
+            opacity: 0.8;
           }
         }
         

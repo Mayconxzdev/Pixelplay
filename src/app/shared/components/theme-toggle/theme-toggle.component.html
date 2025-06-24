@@ -1,0 +1,3 @@
+<ion-button (click)="toggleTheme()" fill="clear" class="theme-toggle" [attr.aria-label]="isDark ? 'Mudar para tema claro' : 'Mudar para tema escuro'">
+  <ion-icon slot="icon-only" [name]="isDark ? 'sunny' : 'moon'" [color]="isDark ? 'warning' : 'medium'"></ion-icon>
+</ion-button>

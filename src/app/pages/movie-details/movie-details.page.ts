@@ -109,6 +109,29 @@ export class MovieDetailsPage implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  // Manipula erros de carregamento de imagem
+  onImageError(event: any, imageType: 'poster' | 'backdrop') {
+    const imgElement = event.target as HTMLImageElement;
+    
+    // Define um placeholder baseado no tipo de imagem
+    if (imageType === 'poster') {
+      imgElement.src = 'assets/images/no-poster.jpg';
+    } else if (imageType === 'backdrop') {
+      // Para o backdrop, podemos usar uma cor de fundo ou um placeholder
+      const backdropContainer = imgElement.closest('.backdrop');
+      if (backdropContainer) {
+        backdropContainer.classList.add('no-backdrop-image');
+      }
+      // Tenta carregar o poster como fallback
+      if (this.movie?.poster_path) {
+        imgElement.src = `https://image.tmdb.org/t/p/w1280${this.movie.poster_path}`;
+      }
+    }
+    
+    // Remove o manipulador de erro para evitar loops
+    imgElement.onerror = null;
+  }
+
   private async loadMovieDetails() {
     const id = this.route.snapshot.paramMap.get('id');
     

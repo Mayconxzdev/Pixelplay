@@ -4,6 +4,7 @@ import { IonicModule } from '@ionic/angular';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
+import { ThemeToggleComponent } from '../../shared/components/theme-toggle/theme-toggle.component';
 
 @Component({
   selector: 'app-tabs',
@@ -12,7 +13,8 @@ import { Subscription } from 'rxjs';
   standalone: true,
   imports: [
     CommonModule,
-    IonicModule
+    IonicModule,
+    ThemeToggleComponent
   ]
 })
 export class TabsComponent implements OnInit, OnDestroy {

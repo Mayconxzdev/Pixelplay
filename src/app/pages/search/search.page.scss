@@ -1,4 +1,4 @@
-// Variáveis de cores e estilos
+﻿// Variáveis de cores e estilos
 :host {
   --search-toolbar-height: 64px;
   --search-bar-height: 72px;
@@ -13,7 +13,7 @@
   height: 100%;
   background: var(--ion-background-color);
   color: var(--ion-text-color);
-  will-change: transform, opacity;
+  /* Otimizado: removido will-change desnecess�rio */
   
   // Estilos para o tema escuro
   @media (prefers-color-scheme: dark) {
@@ -197,7 +197,7 @@
   --padding-end: 16px;
   --padding-bottom: 16px;
   contain: strict; /* Otimiza a renderização */
-  will-change: transform; /* Otimiza as animações de rolagem */
+  /* Otimizado: removido will-change desnecessário */
 }
 
 // Container principal
@@ -232,7 +232,7 @@ ion-list {
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
     transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
     transform: translateZ(0);
-    will-change: transform, box-shadow;
+    /* Otimizado: removido will-change desnecess�rio */
     
     &:active {
       transform: scale(0.98) translateZ(0);
@@ -605,7 +605,7 @@ ion-list {
   flex-direction: column;
   position: relative;
   contain: content;
-  will-change: transform, opacity;
+  /* Otimizado: removido will-change desnecess�rio */
   transition: var(--transition);
   
   // Garante que o conteúdo não fique atrás da barra de navegação no iOS
@@ -1448,3 +1448,5 @@ ion-list {
     }
   }
 }
+
+
