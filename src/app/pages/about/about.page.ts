@@ -1,8 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Router, RouterModule } from '@angular/router';
+import { addIcons } from 'ionicons';
+import { logoGithub, logoLinkedin, mail, film, play, arrowBack } from 'ionicons/icons';
 
 export interface TeamMember {
   name: string;
@@ -30,7 +32,22 @@ export interface TeamMember {
     RouterModule
   ]
 })
-export class AboutPage {
+export class AboutPage implements OnInit {
+  constructor() {
+    // Register all icons used in this component
+    addIcons({
+      'logo-github': logoGithub,
+      'logo-linkedin': logoLinkedin,
+      'mail': mail,
+      'film': film,
+      'play': play,
+      'arrow-back': arrowBack
+    });
+  }
+
+  ngOnInit() {
+    // Initialization code if needed
+  }
   teamMembers: TeamMember[] = [
     {
       name: 'Lucas',
