@@ -81,10 +81,7 @@
             <ion-button (click)="toggleFavorite()" fill="clear" class="action-button">
               <ion-icon slot="icon-only" [name]="movie.isFavorite ? 'heart' : 'heart-outline'" [color]="movie.isFavorite ? 'danger' : 'light'"></ion-icon>
             </ion-button>
-            <ion-button (click)="showTrailer = true" fill="clear" *ngIf="trailerUrl" class="trailer-button">
-              <ion-icon name="play-circle-outline" slot="start"></ion-icon>
-              Assistir Trailer
-            </ion-button>
+            <!-- Removido o botão de trailer duplicado -->
           </div>
         </div>
       </div>

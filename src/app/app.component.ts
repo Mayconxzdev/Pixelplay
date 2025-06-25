@@ -2,8 +2,38 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
+import { Platform } from '@ionic/angular/standalone';
+
 import { addIcons } from 'ionicons';
-import { close, mail, logoGoogle, logIn, personCircle, heart, personAdd, informationCircleOutline, sunny, moon } from 'ionicons/icons';
+import { 
+  close, 
+  mail, 
+  logoGoogle,
+  logIn,
+  personCircle,
+  heart,
+  personAdd,
+  informationCircleOutline,
+  sunny,
+  moon,
+  heartOutline,
+  playCircleOutline,
+  playCircle,
+  peopleOutline,
+  personCircleOutline,
+  alertCircleOutline,
+  arrowBack,
+  chevronBack,
+  chevronForward,
+  star,
+  starOutline,
+  timeOutline,
+  calendarOutline,
+  languageOutline,
+  cashOutline,
+  peopleCircleOutline,
+  closeCircleOutline
+} from 'ionicons/icons';
 import { ThemeService } from './core/services/theme.service';
 
 @Component({
@@ -42,18 +72,37 @@ export class AppComponent {
       this.themeService.setTheme('system').catch(console.error);
     }
     
-    // Registra os ícones
-    addIcons({ 
-      close, 
-      mail, 
-      logoGoogle, 
-      logIn,
-      personCircle,
-      heart,
-      personAdd,
-      informationCircleOutline,
-      sunny,
-      moon
+    // Register all icons
+    addIcons({
+      'close': close,
+      'mail': mail,
+      'logo-google': logoGoogle,
+      'log-in': logIn,
+      'person-circle': personCircle,
+      'heart': heart,
+      'person-add': personAdd,
+      'information-circle-outline': informationCircleOutline,
+      'sunny': sunny,
+      'moon': moon,
+      'heart-outline': heartOutline,
+      'play-circle-outline': playCircleOutline,
+      'play-circle': playCircle,
+      'people-outline': peopleOutline,
+      'person-circle-outline': personCircleOutline,
+      'alert-circle-outline': alertCircleOutline,
+      'arrow-back': arrowBack,
+      'chevron-back': chevronBack,
+      'chevron-forward': chevronForward,
+      'star': star,
+      'star-outline': starOutline,
+      'time-outline': timeOutline,
+      'calendar-outline': calendarOutline,
+      'language-outline': languageOutline,
+      'cash-outline': cashOutline,
+      'people-circle-outline': peopleCircleOutline,
+      'close-circle-outline': closeCircleOutline
     });
+    
+    console.log('✅ Ícones registrados com sucesso!');
   }
 }
