@@ -1,5 +1,102 @@
 /* Movie Details Page Styles */
 :host {
+  /* Estilo global para forçar cor preta em todos os textos no modo claro */
+  :host-context(.light) {
+    /* Estilo para todos os elementos de texto */
+    *:not(h2, h3, h4, h5, h6, .section-title, .section-header, .section-header *) {
+      color: #1a1a1a !important;
+      --color: #1a1a1a !important;
+      
+      /* Estilo para ícones */
+      ion-icon {
+        color: #1a1a1a !important;
+        --color: #1a1a1a !important;
+      }
+      
+      /* Estilo para spans dentro de elementos de texto */
+      span {
+        color: #1a1a1a !important;
+        --color: #1a1a1a !important;
+      }
+    }
+    
+    /* Estilo específico para títulos de seção (manter branco) */
+    h2, h3, h4, h5, h6, .section-title, .section-header, .section-header * {
+      color: #ffffff !important;
+      --color: #ffffff !important;
+    }
+  }
+  
+  /* Estilo para garantir que os títulos de seção fiquem brancos */
+  h2, h3, h4, h5, h6, .section-title, .section-header, .section-header * {
+    color: var(--ion-text-color);
+    --color: var(--ion-text-color);
+    
+    :host-context(.light) & {
+      color: #ffffff !important;
+      --color: #ffffff !important;
+    }
+  }
+  /* Estilos para informações de data, duração, idioma no modo claro */
+  :host-context(.light) {
+    .details .detail,
+    .info-section .info-item,
+    .movie-meta span,
+    .release-date,
+    .runtime,
+    .language,
+    .movie-content .details .detail,
+    .movie-content .info-section .info-item,
+    .movie-content .movie-meta span,
+    .movie-content .release-date,
+    .movie-content .runtime,
+    .movie-content .language,
+    .movie-content .details .detail span,
+    .movie-content .info-section .info-item span,
+    .movie-content .movie-meta span span,
+    .movie-content .release-date span,
+    .movie-content .runtime span,
+    .movie-content .language span {
+      color: #1a1a1a !important;
+      --color: #1a1a1a !important;
+      
+      ion-icon {
+        color: #1a1a1a !important;
+        --color: #1a1a1a !important;
+      }
+    }
+  }
+
+  /* Estilos para os títulos das seções - FORÇANDO COR BRANCA */
+  h2, 
+  .section h2, 
+  .trailer-section h2, 
+  .cast-section h2, 
+  .similar-section h2, 
+  .info-section h2, 
+  .overview-section h2,
+  .section-header h2 {
+    color: white !important;
+    --color: white !important;
+    color: var(--ion-text-color);
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 1.25rem 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    
+    ion-icon {
+      color: var(--ion-color-primary);
+      font-size: 1.5rem;
+    }
+    
+    :host-context(.light) & {
+      color: #ffffff !important;
+      --color: #ffffff !important;
+    }
+  }
   --backdrop-height: 320px;
   --poster-width: 140px;
   --info-padding: 1.25rem;
@@ -196,6 +293,49 @@ ion-toolbar {
   --color: var(--ion-text-color);
   --border-width: 0;
   --ion-toolbar-background: transparent;
+  
+  /* Estilo para o botão de voltar no modo claro */
+  :host-context(.light) & {
+    --color: #1a1a1a;
+    
+    ion-back-button {
+      --color: #1a1a1a;
+      --color-hover: #1a1a1a;
+      --color-focused: #1a1a1a;
+      --opacity: 1;
+      --background-hover: transparent;
+      --background-focused: transparent;
+      --background-hover-opacity: 0;
+      --background-focused-opacity: 0;
+      
+      &::part(native) {
+        color: #1a1a1a !important;
+        --color: #1a1a1a !important;
+      }
+      
+      &::part(icon) {
+        color: #1a1a1a !important;
+        --color: #1a1a1a !important;
+      }
+    }
+  }
+  
+  /* Estilo para o botão de favoritos no modo claro */
+  :host-context(.light) & .favorite-button {
+    --color: #1a1a1a !important;
+    --color-hover: #1a1a1a !important;
+    --color-focused: #1a1a1a !important;
+    
+    ion-icon {
+      color: #1a1a1a !important;
+    }
+    
+    &.favorited {
+      ion-icon {
+        color: var(--ion-color-danger) !important;
+      }
+    }
+  }
   --ion-toolbar-color: var(--ion-text-color);
   position: fixed;
   top: 0;
@@ -588,6 +728,34 @@ ion-toolbar {
       position: relative;
       z-index: 2;
       
+      .quick-info {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin: 1rem 0;
+        color: rgba(255, 255, 255, 0.9);
+        
+        .info-item {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          font-size: 0.9rem;
+          
+          ion-icon {
+            font-size: 1.1rem;
+            color: var(--ion-color-primary);
+          }
+        }
+        
+        :host-context(.light) & {
+          color: #1a1a1a;
+          
+          .info-item {
+            color: #1a1a1a;
+          }
+        }
+      }
+      
       @media (max-width: 576px) {
         width: 100%;
         text-align: center;
@@ -910,6 +1078,16 @@ ion-toolbar {
           opacity: 0.9;
           font-size: 0.95rem;
           
+          :host-context(.light) & {
+            color: #1a1a1a !important;
+            --color: #1a1a1a !important;
+            
+            ion-icon {
+              color: #1a1a1a !important;
+              --color: #1a1a1a !important;
+            }
+          }
+          
           ion-icon {
             color: var(--ion-color-primary);
             font-size: 1.2rem;
@@ -1017,6 +1195,20 @@ ion-toolbar {
     }
     
     // Cast section
+    .cast-section, .trailer-section, .similar-section, .additional-sections {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 12px;
+      padding: 1.75rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.3s ease;
+      
+      :host-context(.light) & {
+        background: #f9f9f9;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+      }
+    }
+    
     .cast-section {
       .cast-scroll {
         display: flex;
