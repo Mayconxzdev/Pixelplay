@@ -1,7 +1,7 @@
 <ion-header #headerToolbar class="ion-no-border">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/tabs/home" text="" icon="arrow-back" color="light"></ion-back-button>
+      <ion-back-button defaultHref="/tabs/home" text="" icon="arrow-back"></ion-back-button>
     </ion-buttons>
     <ion-title #headerTitle class="ion-text-center">{{ movie?.title || 'Detalhes' }}</ion-title>
     <ion-buttons slot="end">
@@ -21,7 +21,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [class.dark-bg]="!movie" [fullscreen]="true" scrollEvents="true" (ionScroll)="onContentScroll($event)" class="movie-details-content">
+<ion-content [class.dark-bg]="!movie" [fullscreen]="true" scrollEvents="true" (ionScroll)="onContentScroll($event)">
   <div *ngIf="loading" class="loading-container">
     <div class="loading-content">
       <ion-spinner></ion-spinner>
@@ -38,15 +38,31 @@
   </div>
 
   <div *ngIf="!loading && movie" class="movie-details" [class.loaded]="!loading">
-    <!-- Backdrop Image with Blur -->
+    <!-- Backdrop Image with Parallax -->
     <div class="backdrop-container" #backdropContainer>
-      <div class="backdrop" *ngIf="movie.backdrop_path" [style.background-image]="'url(https://image.tmdb.org/t/p/w1400_and_h450_face' + movie.backdrop_path + ')'">
+      <div class="backdrop" *ngIf="movie.backdrop_path" [style.backgroundImage]="'url(https://image.tmdb.org/t/p/w1400_and_h450_face' + movie.backdrop_path + ')'">
         <div class="backdrop-overlay"></div>
       </div>
     </div>
 
     <!-- Movie Header -->
     <div class="movie-header">
+      <div class="poster-container" *ngIf="movie.poster_path">
+        <div class="poster-wrapper">
+          <img 
+            [src]="'https://image.tmdb.org/t/p/w342' + movie.poster_path" 
+            [alt]="movie.title + ' poster'" 
+            class="poster" 
+            loading="lazy"
+            (error)="onImageError($event, 'poster')">
+          
+          <!-- Play Trailer Button -->
+          <div class="play-trailer" *ngIf="trailerUrl" (click)="showTrailer = true">
+            <ion-icon name="play-circle"></ion-icon>
+          </div>
+        </div>
+      </div>
+      
       <div class="movie-header-content">
         <div class="header-info">
           <div class="title-wrapper">
@@ -79,28 +95,8 @@
           
           <div class="actions">
             <ion-button (click)="toggleFavorite()" fill="clear" class="action-button">
-              <ion-icon slot="icon-only" [name]="movie.isFavorite ? 'heart' : 'heart-outline'" [color]="movie.isFavorite ? 'danger' : 'light'"></ion-icon>
+              <ion-icon slot="icon-only" [name]="movie.isFavorite ? 'heart' : 'heart-outline'" [color]="movie.isFavorite ? 'danger' : 'dark'"></ion-icon>
             </ion-button>
-            <ion-button (click)="showTrailer = true" fill="clear" *ngIf="trailerUrl" class="trailer-button">
-              <ion-icon name="play-circle-outline" slot="start"></ion-icon>
-              Assistir Trailer
-            </ion-button>
-          </div>
-        </div>
-      </div>
-      
-      <div class="poster-container" *ngIf="movie.poster_path">
-        <div class="poster-wrapper">
-          <img 
-            [src]="'https://image.tmdb.org/t/p/w342' + movie.poster_path" 
-            [alt]="movie.title + ' poster'" 
-            class="poster" 
-            loading="lazy"
-            (error)="onImageError($event, 'poster')">
-          
-          <!-- Play Trailer Button -->
-          <div class="play-trailer" *ngIf="trailerUrl" (click)="showTrailer = true">
-            <ion-icon name="play-circle"></ion-icon>
           </div>
         </div>
       </div>
@@ -118,6 +114,18 @@
     <div class="section trailer-section" *ngIf="trailerUrl">
       <div class="section-header">
         <h2><ion-icon name="play-circle-outline"></ion-icon> Trailer</h2>
+        <ion-button 
+          fill="clear" 
+          (click)="toggleTrailer()" 
+          class="toggle-trailer-btn"
+          [color]="showTrailer ? 'medium' : 'primary'"
+          size="small">
+          <ion-icon 
+            [name]="showTrailer ? 'chevron-up-outline' : 'play-circle-outline'" 
+            slot="start">
+          </ion-icon>
+          {{ showTrailer ? 'Ocultar' : 'Assistir Trailer' }}
+        </ion-button>
       </div>
       
       <div class="trailer-container" *ngIf="showTrailer">
@@ -133,19 +141,6 @@
           </iframe>
         </div>
       </div>
-      
-      <ion-button 
-        expand="block" 
-        (click)="toggleTrailer()" 
-        class="toggle-trailer-btn"
-        [color]="showTrailer ? 'medium' : 'primary'"
-        fill="outline">
-        <ion-icon 
-          [name]="showTrailer ? 'close-outline' : 'play-circle-outline'" 
-          slot="start">
-        </ion-icon>
-        {{ showTrailer ? 'Fechar Trailer' : 'Assistir Trailer' }}
-      </ion-button>
     </div>
     
     <div class="section trailer-section" *ngIf="!trailerUrl && !loading">
@@ -159,9 +154,9 @@
     <div class="section cast-section" *ngIf="movie?.credits?.cast?.length">
       <div class="section-header">
         <h2><ion-icon name="people-outline"></ion-icon> Elenco Principal</h2>
-        <ion-button fill="clear" size="small" routerLink="/cast/{{movie.id}}" color="medium">
+        <ion-button fill="clear" size="small" routerLink="/cast/{{movie.id}}">
           Ver todos
-          <ion-icon slot="end" name="chevron-forward"></ion-icon>
+          <ion-icon slot="end" name="arrow-forward"></ion-icon>
         </ion-button>
       </div>
       
@@ -190,9 +185,9 @@
     <div class="section similar-section" *ngIf="movie?.similar?.results?.length">
       <div class="section-header">
         <h2><ion-icon name="film-outline"></ion-icon> Filmes Similares</h2>
-        <ion-button fill="clear" size="small" (click)="viewAllSimilar()" color="medium">
+        <ion-button fill="clear" size="small" (click)="viewAllSimilar()">
           Ver todos
-          <ion-icon slot="end" name="chevron-forward"></ion-icon>
+          <ion-icon slot="end" name="arrow-forward"></ion-icon>
         </ion-button>
       </div>
       
@@ -208,10 +203,15 @@
               (error)="onImageError($event, 'poster')"
               class="similar-poster">
             <div class="similar-overlay">
-              <ion-icon name="play-circle-outline"></ion-icon>
+              <div class="similar-rating" [class]="'rating-' + getRatingColor(item.vote_average)">
+                <ion-icon name="star"></ion-icon>
+                {{ item.vote_average?.toFixed(1) || 'N/A' }}
+              </div>
+              <ion-button fill="clear" class="play-button">
+                <ion-icon name="play-circle"></ion-icon>
+              </ion-button>
             </div>
           </div>
-          <h4 class="similar-title">{{ item.title || 'Título não disponível' }}</h4>
           <div class="similar-info">
             <h4 class="similar-title">{{ item.title || 'Título indisponível' }}</h4>
             <p class="similar-year" *ngIf="item.release_date">
