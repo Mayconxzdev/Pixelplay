@@ -54,31 +54,44 @@
 
 // Light theme overrides
 :host-context(.light) {
-  --ion-background-color: #f8f9fa;
-  --ion-background-color-rgb: 248, 249, 250;
+  // Base colors
+  --ion-background-color: #ffffff;
+  --ion-background-color-rgb: 255, 255, 255;
   --ion-text-color: #1a1a1a;
   --ion-text-color-rgb: 26, 26, 26;
   --ion-border-color: #e0e0e0;
   --ion-item-background: #ffffff;
-  --ion-card-background: #ffffff;
+  --ion-card-background: #f9f9f9;
   --ion-toolbar-background: #ffffff;
   --ion-tab-bar-background: #ffffff;
-  --ion-color-step-50: #f8f9fa;
-  --ion-color-step-100: #e9ecef;
-  --ion-color-step-200: #dee2e6;
-  --ion-color-step-300: #ced4da;
-  --ion-color-step-400: #adb5bd;
-  --ion-color-step-500: #6c757d;
-  --ion-color-step-600: #495057;
-  --ion-color-step-700: #343a40;
-  --ion-color-step-800: #212529;
-  --ion-color-step-900: #121212;
-  --ion-color-step-950: #0a0a0a;
   
-  // Ensure status bar text is dark in light mode
+  // Color steps for better contrast
+  --ion-color-step-50: #f8f9fa;
+  --ion-color-step-100: #f1f3f5;
+  --ion-color-step-150: #e9ecef;
+  --ion-color-step-200: #dee2e6;
+  --ion-color-step-250: #ced4da;
+  --ion-color-step-300: #adb5bd;
+  --ion-color-step-350: #9ca3af;
+  --ion-color-step-400: #6c757d;
+  --ion-color-step-450: #4b5563;
+  --ion-color-step-500: #495057;
+  --ion-color-step-550: #374151;
+  --ion-color-step-600: #343a40;
+  --ion-color-step-650: #1f2937;
+  --ion-color-step-700: #1a1a1a;
+  --ion-color-step-750: #111827;
+  --ion-color-step-800: #0f172a;
+  --ion-color-step-900: #0a0a0a;
+  --ion-color-step-950: #030712;
+  
+  // Status bar and toolbar
   ion-toolbar {
-    --ion-toolbar-color: #1a1a1a;
+    --background: #ffffff;
+    --color: #1a1a1a;
+    --border-color: #e0e0e0;
     --ion-toolbar-background: #ffffff;
+    --ion-toolbar-color: #1a1a1a;
     
     ion-back-button {
       --color: #1a1a1a;
@@ -86,22 +99,36 @@
     
     ion-title {
       color: #1a1a1a;
+      font-weight: 600;
     }
   }
   
-  // Improve contrast for movie title and rating
+  // Header content
   .movie-header-content {
     h1 {
       color: #1a1a1a;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+      text-shadow: none;
+      font-weight: 700;
     }
     
     .rating-container {
-      background: rgba(0, 0, 0, 0.05) !important;
-      border: 1px solid rgba(0, 0, 0, 0.1) !important;
+      background: rgba(255, 215, 0, 0.15) !important; // Gold background for rating
+      border: 1px solid rgba(255, 215, 0, 0.2) !important;
+      color: #1a1a1a !important;
       
       .rating {
-        color: #1a1a1a !important;
+        color: #1a1a1a;
+        font-weight: 700;
+        
+        ion-icon {
+          color: #FFD700; // Gold star
+        }
+      }
+      
+      .vote-count {
+        color: #4b5563;
+        font-size: 0.85em;
+        margin-left: 4px;
       }
     }
   }
@@ -271,15 +298,13 @@ ion-toolbar {
   
   .movie-header-content {
     flex: 1;
-    color: var(--ion-text-color);
-    position: relative;
+    color: white;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     z-index: 5;
-    padding: 0 var(--info-padding);
-    margin-bottom: 1.5rem;
     
-    h1 {
-      color: white;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    :host-context(.light) & {
+      color: #1a1a1a;
+      text-shadow: none;
     }
     
     .rating-container {
@@ -412,11 +437,19 @@ ion-toolbar {
   
   .movie-header {
     position: relative;
-    padding: var(--info-padding);
+    padding: 1.5rem 1.5rem 2rem;
     margin-top: 0;
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
     gap: 1.5rem;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), transparent);
+    border-radius: 24px 24px 0 0;
+    overflow: hidden;
+    
+    :host-context(.light) & {
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.8));
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
     z-index: 10;
     margin-top: -120px;
     padding-bottom: 0;
@@ -430,14 +463,20 @@ ion-toolbar {
     
     .poster-container {
       width: var(--poster-width);
-      border-radius: 12px;
+      border-radius: 16px;
       overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
       position: relative;
       z-index: 5;
       margin: 0 auto;
       transition: all 0.3s ease;
-      border: 2px solid rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      background: var(--ion-background-color);
+      
+      :host-context(.light) & {
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        border-color: rgba(0, 0, 0, 0.1);
+      }
       
       @media (min-width: 768px) {
         margin: 0;
@@ -741,17 +780,20 @@ ion-toolbar {
   }
   
   .movie-content {
-    background: transparent;
-    border-radius: 16px 16px 0 0;
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+    background: var(--ion-background-color);
+    border-radius: 24px 24px 0 0;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
     position: relative;
     z-index: 10;
     margin-top: -30px;
-    padding-top: 30px;
-    margin: 1rem;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    padding: 2rem 1.5rem 1.5rem;
     color: var(--ion-text-color);
-    padding: 1.5rem;
+    transition: all 0.3s ease;
+    
+    :host-context(.light) & {
+      background: #ffffff;
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.03);
+    }
     
     .info-container {
       box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
@@ -947,28 +989,6 @@ ion-toolbar {
       
       &:last-child {
         margin-bottom: 0;
-      }
-      
-      .section-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1.25rem;
-        
-        h2 {
-          font-size: 1.5rem;
-          font-weight: 700;
-          margin: 0;
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          
-          ion-icon {
-            color: var(--ion-color-primary);
-          }
-        }
-        
-        ion-button {
           --padding-start: 0.75rem;
           --padding-end: 0.5rem;
           --color: var(--ion-color-primary);
@@ -1597,7 +1617,7 @@ ion-toolbar {
       }
     }
   }
-}
+
 
 // Global animations
 @keyframes fadeInUp {
