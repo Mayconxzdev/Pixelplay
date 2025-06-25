@@ -1,11 +1,9 @@
 <ion-header #headerToolbar class="ion-no-border">
   <ion-toolbar>
-    <div class="header-content">
-      <button (click)="goBack()" class="back-button">
-        <ion-icon name="arrow-back"></ion-icon>
-      </button>
-      <ion-title #headerTitle class="ion-text-center">{{ movie?.title || 'Detalhes' }}</ion-title>
-    </div>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/home" text="" icon="arrow-back"></ion-back-button>
+    </ion-buttons>
+    <ion-title #headerTitle class="ion-text-center">{{ movie?.title || 'Detalhes' }}</ion-title>
     <ion-buttons slot="end">
       <ion-button 
         (click)="toggleFavorite()" 
