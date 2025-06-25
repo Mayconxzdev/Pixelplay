@@ -58,23 +58,37 @@ export class MovieDetailsPage implements OnInit, OnDestroy, AfterViewInit {
     // Usando o próprio content do Ionic para gerenciar o scroll
     this.scrollSubscription = fromEvent(window, 'scroll')
       .pipe(debounceTime(10))
-      .subscribe(() => this.onContentScroll());
+      .subscribe((event) => this.onContentScroll(event));
   }
 
-  private onContentScroll() {
-    const scrollTop = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+  onContentScroll(event: any) {
+    const scrollTop = event?.target?.scrollTop || window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
     const toolbarElement = this.headerToolbar?.el;
     const titleElement = this.headerTitle?.el;
+    const backdrop = document.querySelector('.backdrop') as HTMLElement;
 
-    if (!toolbarElement || !titleElement) return;
+    // Efeito de parallax no backdrop
+    if (backdrop) {
+      const translateValue = scrollTop * 0.5; // Ajuste a intensidade do efeito aqui
+      backdrop.style.transform = `translate3d(0, ${translateValue}px, 0)`;
+    }
+
+    // Opacidade do overlay do backdrop
+    const backdropOverlay = document.querySelector('.backdrop-overlay') as HTMLElement;
+    if (backdropOverlay) {
+      const opacity = Math.min(scrollTop / 200, 0.8); // Ajuste a velocidade do fade
+      backdropOverlay.style.opacity = opacity.toString();
+    }
 
     // Mostra/esconde o título no cabeçalho
-    if (scrollTop > 100) {
-      titleElement.classList.add('visible');
-      toolbarElement.classList.add('scrolled');
-    } else {
-      titleElement.classList.remove('visible');
-      toolbarElement.classList.remove('scrolled');
+    if (toolbarElement && titleElement) {
+      if (scrollTop > 100) {
+        titleElement.classList.add('visible');
+        toolbarElement.classList.add('scrolled');
+      } else {
+        titleElement.classList.remove('visible');
+        toolbarElement.classList.remove('scrolled');
+      }
     }
   }
 
@@ -109,23 +123,48 @@ export class MovieDetailsPage implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  // Navega para a página de detalhes de uma pessoa
+  viewPersonDetails(personId: number, event?: Event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    this.router.navigate(['/person', personId]);
+  }
+
+  // Exibe todos os filmes similares
+  viewAllSimilar() {
+    if (this.movie?.id) {
+      this.router.navigate(['/similar-movies', this.movie.id]);
+    }
+  }
+
   // Manipula erros de carregamento de imagem
-  onImageError(event: any, imageType: 'poster' | 'backdrop') {
+  onImageError(event: any, imageType: 'poster' | 'backdrop' | 'profile' | 'logo') {
     const imgElement = event.target as HTMLImageElement;
     
     // Define um placeholder baseado no tipo de imagem
-    if (imageType === 'poster') {
-      imgElement.src = 'assets/images/no-poster.jpg';
-    } else if (imageType === 'backdrop') {
-      // Para o backdrop, podemos usar uma cor de fundo ou um placeholder
-      const backdropContainer = imgElement.closest('.backdrop');
-      if (backdropContainer) {
-        backdropContainer.classList.add('no-backdrop-image');
-      }
-      // Tenta carregar o poster como fallback
-      if (this.movie?.poster_path) {
-        imgElement.src = `https://image.tmdb.org/t/p/w1280${this.movie.poster_path}`;
-      }
+    switch (imageType) {
+      case 'poster':
+        imgElement.src = 'assets/images/no-poster.jpg';
+        break;
+      case 'backdrop':
+        // Para o backdrop, podemos usar uma cor de fundo ou um placeholder
+        const backdropContainer = imgElement.closest('.backdrop');
+        if (backdropContainer) {
+          backdropContainer.classList.add('no-backdrop-image');
+        }
+        // Tenta carregar o poster como fallback
+        if (this.movie?.poster_path) {
+          imgElement.src = `https://image.tmdb.org/t/p/w1280${this.movie.poster_path}`;
+        }
+        break;
+      case 'profile':
+        imgElement.src = 'assets/avatar-placeholder.png';
+        break;
+      case 'logo':
+        imgElement.style.display = 'none'; // Esconde o logo se não carregar
+        break;
     }
     
     // Remove o manipulador de erro para evitar loops
@@ -185,6 +224,12 @@ export class MovieDetailsPage implements OnInit, OnDestroy, AfterViewInit {
     );
   }
 
+  // Obtém os nomes dos gêneros formatados como tags
+  getGenreNames(genreIds: number[]): string[] {
+    return this.genreService.getGenreNames(genreIds);
+  }
+
+  // Método de compatibilidade para templates antigos
   getGenres(genreIds: number[]): string {
     return this.genreService.getGenreNames(genreIds).join(', ');
   }
@@ -195,9 +240,10 @@ export class MovieDetailsPage implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getRatingColor(rating: number): string {
-    if (rating >= 7) return 'success';
-    if (rating >= 5) return 'warning';
-    return 'danger';
+    if (!rating) return 'no-rating';
+    if (rating >= 7.5) return 'high';
+    if (rating >= 5) return 'medium';
+    return 'low';
   }
 
   async presentToast(message: string, icon: string, color: string) {
@@ -304,7 +350,8 @@ export class MovieDetailsPage implements OnInit, OnDestroy, AfterViewInit {
         if (videos && videos.length > 0) {
           // Pega o primeiro trailer disponível
           const trailer = videos[0];
-          const url = `https://www.youtube.com/embed/${trailer.key}?autoplay=0&rel=0&showinfo=0`;
+          // Garante que autoplay=0 está presente e rel=0 para evitar vídeos relacionados
+          const url = `https://www.youtube.com/embed/${trailer.key}?autoplay=0&rel=0&showinfo=0&modestbranding=1`;
           // Marca a URL como segura
           this.trailerUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url) as string;
         } else {
@@ -323,24 +370,27 @@ export class MovieDetailsPage implements OnInit, OnDestroy, AfterViewInit {
   toggleTrailer() {
     this.showTrailer = !this.showTrailer;
     
-    // Se estiver escondendo o trailer, limpa o iframe
-    if (!this.showTrailer) {
-      this.clearTrailer();
+    // Se estiver escondendo o trailer, pausa o vídeo sem limpar a URL
+    if (!this.showTrailer && this.youtubeIframe?.nativeElement) {
+      const iframe = this.youtubeIframe.nativeElement;
+      // Pausa o vídeo definindo a URL para a mesma URL, mas com autoplay=0
+      if (iframe.src.includes('autoplay=1')) {
+        iframe.src = iframe.src.replace('autoplay=1', 'autoplay=0');
+      }
     }
   }
 
-  // Limpa o trailer atual
+  // Limpa o trailer atual (usado apenas ao sair da página)
   private clearTrailer() {
     // Esconde o trailer
     this.showTrailer = false;
     
-    // Limpa a URL do trailer
-    this.trailerUrl = null;
-    
-    // Destrói o iframe se existir
+    // Pausa o vídeo se estiver tocando
     if (this.youtubeIframe?.nativeElement) {
       const iframe = this.youtubeIframe.nativeElement;
-      iframe.src = 'about:blank';
+      if (iframe.src.includes('autoplay=1')) {
+        iframe.src = iframe.src.replace('autoplay=1', 'autoplay=0');
+      }
     }
   }
 }
