@@ -1,50 +1,88 @@
+ion-header {
+  &::after {
+    display: none !important; // Remove a linha branca abaixo do header
+  }
+}
+
 .login-container {
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
-  background: var(--ion-color-light);
+  padding: 0 20px 20px;
+  background: var(--ion-background-color);
 }
 
 .login-content {
   width: 100%;
   max-width: 400px;
   padding: 20px;
-  background: var(--ion-color-light-tint);
+  background: var(--ion-background-color);
   border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: none;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 
   h1 {
     font-size: 24px;
     font-weight: 700;
-    color: var(--ion-color-dark);
+    color: var(--ion-text-color);
     margin-bottom: 8px;
     text-align: center;
   }
 
   p {
-    color: var(--ion-color-medium);
+    color: var(--ion-text-color);
+    opacity: 0.8;
     text-align: center;
     margin-bottom: 24px;
   }
 
   form {
     ion-item {
-      --background: transparent;
-      --border-color: var(--ion-color-medium);
+      --background: var(--ion-background-color);
+      --border-color: var(--ion-color-step-200, #e0e0e0);
+      --color: var(--ion-text-color);
+      --highlight-color-focused: var(--ion-color-primary);
       margin-bottom: 16px;
+      border-radius: 8px;
+      overflow: hidden;
+      
+      ion-label {
+        color: var(--ion-text-color);
+        opacity: 0.8;
+      }
+      
+      ion-input {
+        --color: var(--ion-text-color);
+      }
+      
+      &.item-has-focus {
+        --border-color: var(--ion-color-primary);
+      }
     }
 
     ion-note {
       margin: -12px 0 16px 16px;
       font-size: 12px;
+      display: block;
     }
 
     ion-button {
       margin-top: 24px;
       --border-radius: 8px;
       height: 48px;
+      --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s, box-shadow 0.2s;
+      
+      &:active {
+        transform: translateY(2px);
+        --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      
+      &[disabled] {
+        opacity: 0.7;
+      }
     }
   }
 
@@ -55,28 +93,37 @@
     p {
       margin: 0;
       font-size: 14px;
+      color: var(--ion-text-color);
+      opacity: 0.8;
     }
 
     a {
       color: var(--ion-color-primary);
       text-decoration: none;
       font-weight: 600;
+      transition: opacity 0.2s;
 
       &:hover {
+        opacity: 0.8;
         text-decoration: underline;
       }
     }
   }
 }
 
-// Modo escuro
+// Estilos para o tema escuro
 :host-context(.dark) {
   .login-content {
-    background: var(--ion-color-step-150);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-
-    h1 {
-      color: var(--ion-color-light);
+    background: var(--ion-background-color);
+    border-color: var(--ion-color-step-800, #333);
+    
+    ion-item {
+      --background: var(--ion-color-step-50, #1e1e1e);
+      --border-color: var(--ion-color-step-300, #333);
+      
+      ion-label {
+        color: var(--ion-text-color);
+      }
     }
   }
-} 
+}

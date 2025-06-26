@@ -22,12 +22,23 @@ export class AuthService {
     });
   }
 
-  async register(email: string, password: string, displayName: string): Promise<void> {
+  async register(email: string, password: string, displayName: string): Promise<User> {
     try {
+      // 1. Cria o usuário no Firebase Auth
       const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
-      await this.createUserDocument(userCredential.user, displayName);
+      
+      // 2. Atualiza o perfil do usuário com o displayName
       await updateProfile(userCredential.user, { displayName });
+      
+      // 3. Cria o documento do usuário no Firestore (não bloqueante)
+      this.createUserDocument(userCredential.user, displayName).catch(e => {
+        console.error('Erro ao criar documento do usuário:', e);
+        // Não lançamos o erro aqui para não interromper o fluxo
+      });
+      
+      return userCredential.user;
     } catch (error) {
+      console.error('Erro no registro:', error);
       throw this.parseFirebaseError(error);
     }
   }

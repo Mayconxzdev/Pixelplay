@@ -11,8 +11,12 @@ export const routes: Routes = [
     loadChildren: () => import('./pages/tabs/tabs-routing.module').then(m => m.TabsRoutingModule)
   },
   {
+    path: 'welcome',
+    loadChildren: () => import('./pages/welcome/welcome.module').then(m => m.WelcomePageModule)
+  },
+  {
     path: '',
-    redirectTo: 'tabs/home',
+    redirectTo: 'welcome',
     pathMatch: 'full'
   },
   {

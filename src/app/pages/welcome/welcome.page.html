@@ -1,0 +1,52 @@
+<ion-content [fullscreen]="true" class="ion-padding welcome-content">
+  <div class="welcome-wrapper">
+    <div class="welcome-container">
+    <div class="logo-container">
+      <!-- Adicione aqui um ícone ou logo se desejar -->
+      <ion-icon name="film-outline" class="app-logo"></ion-icon>
+    </div>
+    
+    <ion-text>
+      <h1>Bem-vindo ao PixelPlay</h1>
+      <p>Descubra e acompanhe seus filmes favoritos</p>
+    </ion-text>
+    
+    <div class="buttons-container">
+      <ion-button 
+        expand="block" 
+        (click)="openLogin()" 
+        class="welcome-button"
+        shape="round"
+      >
+        <ion-icon slot="start" name="log-in-outline"></ion-icon>
+        Entrar
+      </ion-button>
+      
+      <ion-button 
+        expand="block" 
+        fill="outline" 
+        (click)="openRegister()" 
+        class="welcome-button"
+        shape="round"
+      >
+        <ion-icon slot="start" name="person-add-outline"></ion-icon>
+        Criar Conta
+      </ion-button>
+      
+      <ion-button 
+        expand="block" 
+        fill="clear" 
+        (click)="continueAsGuest()" 
+        class="guest-button"
+      >
+        <ion-icon slot="start" name="person-outline"></ion-icon>
+        Continuar como convidado
+      </ion-button>
+    </div>
+    
+    <div class="app-version">
+      <small>Versão 1.0.0</small>
+      </div>
+    </div>
+  </div>
+</ion-content>
