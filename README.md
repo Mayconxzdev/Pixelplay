@@ -196,4 +196,4 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 
 ---
 
-Desenvolvido com ❤️ por [Seu Nome] | [GitHub](https://github.com/Mayconxzdev)
+Desenvolvido com ❤️ por [Maycon] | [GitHub](https://github.com/Mayconxzdev)
