@@ -57,20 +57,33 @@ export class AppComponent {
   constructor() {
     console.log('AppComponent constructor');
     
-    // Força a aplicação do tema ao iniciar
-    try {
-      const currentTheme = this.themeService.getCurrentTheme();
-      console.log('AppComponent: Current theme:', currentTheme);
-      this.themeService.setTheme(currentTheme).catch(error => {
-        console.error('AppComponent: Error applying theme:', error);
-        // Usa o tema do sistema como fallback em caso de erro
-        this.themeService.setTheme('system').catch(console.error);
-      });
-    } catch (error) {
-      console.error('AppComponent: Error getting current theme:', error);
-      // Usa o tema do sistema como fallback
-      this.themeService.setTheme('system').catch(console.error);
-    }
+    // Inicializa o tema de forma assíncrona
+    const initializeTheme = async () => {
+      try {
+        // Aguarda o storage estar pronto
+        await this.themeService.init();
+        
+        // Obtém o tema atual do serviço (já carregado no init)
+        const currentTheme = this.themeService.getCurrentTheme();
+        console.log('AppComponent: Current theme:', currentTheme);
+        
+        // Aplica o tema
+        await this.themeService.setTheme(currentTheme);
+        console.log('AppComponent: Theme initialized to:', currentTheme);
+      } catch (error) {
+        console.error('AppComponent: Error initializing theme:', error);
+        // Fallback para o tema do sistema
+        try {
+          await this.themeService.setTheme('system');
+          console.log('AppComponent: Fallback to system theme');
+        } catch (fallbackError) {
+          console.error('AppComponent: Failed to set system theme:', fallbackError);
+        }
+      }
+    };
+    
+    // Executa a inicialização do tema
+    initializeTheme().catch(console.error);
     
     // Register all icons
     addIcons({

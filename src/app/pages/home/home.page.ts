@@ -10,6 +10,7 @@ import { FeaturedCarouselComponent } from '../../shared/components/featured-caro
 import { CategoriesComponent } from '../../shared/components/categories/categories.component';
 import { PopoverController } from '@ionic/angular';
 import { LoginPopoverComponent } from '../../shared/components/login-popover/login-popover.component';
+import { ThemeToggleComponent } from '../../shared/components/theme-toggle/theme-toggle.component';
 
 @Component({
   selector: 'app-home',
@@ -22,7 +23,8 @@ import { LoginPopoverComponent } from '../../shared/components/login-popover/log
     IonicModule,
     MovieListComponent,
     FeaturedCarouselComponent,
-    CategoriesComponent
+    CategoriesComponent,
+    ThemeToggleComponent
   ]
 })
 export class HomePage implements OnInit {

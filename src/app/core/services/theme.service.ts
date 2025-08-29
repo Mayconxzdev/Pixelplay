@@ -76,47 +76,52 @@ export class ThemeService {
   }
 
   async setTheme(theme: ThemeMode) {
-    console.log('ThemeService: Setting theme to', theme);
-    this.currentTheme = theme;
-    const ionApp = document.querySelector('ion-app');
+    console.group('ThemeService.setTheme()');
+    console.log('Setting theme to:', theme);
     
-    if (!ionApp) {
-      console.error('ThemeService: ion-app element not found');
-      return;
-    }
-    
-    let isDark = false;
-    
-    switch (theme) {
-      case 'light':
-        console.log('ThemeService: Applying light theme');
-        ionApp.classList.remove('dark');
-        isDark = false;
-        break;
-        
-      case 'dark':
-        console.log('ThemeService: Applying dark theme');
-        ionApp.classList.add('dark');
-        isDark = true;
-        break;
-        
-      case 'system':
-      default:
-        console.log('ThemeService: Applying system theme');
-        isDark = this.setSystemTheme();
-        break;
-    }
-    
-    // Notifica os assinantes sobre a mudança de tema
-    console.log('ThemeService: Notifying subscribers about theme change:', isDark ? 'dark' : 'light');
-    this.themeChangeSubject.next(isDark);
-    
-    // Salva a preferência no storage
     try {
-      await this.storage.set(this.THEME_KEY, theme);
-      console.log('ThemeService: Theme preference saved to storage:', theme);
+      // Atualiza o tema atual imediatamente
+      this.currentTheme = theme;
+      console.log('Current theme updated to:', this.currentTheme);
+      
+      const ionApp = document.querySelector('ion-app');
+      if (!ionApp) {
+        throw new Error('ion-app element not found');
+      }
+      
+      // Determina se o tema é escuro
+      const isDark = theme === 'dark' || (theme === 'system' && this.prefersDark.matches);
+      console.log('Theme will be:', isDark ? 'dark' : 'light');
+      
+      // Aplica as classes CSS
+      if (isDark) {
+        ionApp.classList.add('dark');
+        document.documentElement.setAttribute('data-theme', 'dark');
+      } else {
+        ionApp.classList.remove('dark');
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+      
+      // Força uma atualização de layout para garantir que as mudanças sejam aplicadas
+      document.body.offsetHeight;
+      
+      // Notifica os assinantes sobre a mudança de tema
+      console.log('Notifying subscribers about theme change');
+      this.themeChangeSubject.next(isDark);
+      
+      // Salva a preferência no storage (não bloqueia a UI)
+      if (this.storageInitialized) {
+        this.storage.set(this.THEME_KEY, theme)
+          .then(() => console.log('Theme preference saved to storage'))
+          .catch(err => console.error('Error saving theme to storage:', err));
+      }
+      
+      return isDark;
     } catch (error) {
-      console.error('ThemeService: Error saving theme to storage:', error);
+      console.error('Error in setTheme:', error);
+      throw error;
+    } finally {
+      console.groupEnd();
     }
   }
 
@@ -144,24 +149,10 @@ export class ThemeService {
   }
 
   async toggleTheme() {
-    console.log('toggleTheme called');
-    try {
-      const current = await this.storage.get(this.THEME_KEY) || 'system';
-      console.log('Current theme from storage:', current);
-      
-      if (current === 'system') {
-        console.log('Switching to dark theme');
-        await this.setTheme('dark');
-      } else if (current === 'dark') {
-        console.log('Switching to light theme');
-        await this.setTheme('light');
-      } else {
-        console.log('Switching to system theme');
-        await this.setTheme('system');
-      }
-    } catch (error) {
-      console.error('Error in toggleTheme:', error);
-    }
+    const nextTheme = this.currentTheme === 'light' ? 'dark' : 
+                     this.currentTheme === 'dark' ? 'system' : 'light';
+    
+    await this.setTheme(nextTheme);
   }
 
   isDarkMode(): boolean {

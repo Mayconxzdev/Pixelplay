@@ -36,14 +36,15 @@ export class ThemeToggleComponent implements OnInit, OnDestroy {
     });
   }
 
-  async toggleTheme() {
-    console.log('ThemeToggleComponent: Toggling theme...');
+  async toggleTheme(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    
     try {
       await this.themeService.toggleTheme();
-      this.isDark = this.themeService.isDarkMode();
-      console.log('ThemeToggleComponent: Theme toggled to:', this.isDark ? 'dark' : 'light');
     } catch (error) {
-      console.error('ThemeToggleComponent: Error toggling theme:', error);
+      console.error('Error toggling theme:', error);
+      this.isDark = this.themeService.isDarkMode();
     }
   }
 
